@@ -54,8 +54,16 @@ call vundle#rc()
 " required! 
 Bundle 'gmarik/vundle'
 
-" My Bundles here:
-" original repos on github
+" Add Bundles here:
+" Examples:
+" * original repos on github
+"     Bundle 'ap/vim-css-color'
+" * vim-scripts repos
+"     Bundle 'L9'
+"     Bundle 'FuzzyFinder'
+" * non github repos
+"     Bundle 'git://git.wincent.com/command-t.git'
+"
     " underlays the hexadecimal CSS colorcodes with their real color. The foreground color is selected appositely. So #FF0000 will look as hot as a fire engine!
     Bundle 'ap/vim-css-color'
     " Supertab is a vim plugin which allows you to use <Tab> for all your insert completion needs (:help ins-completion).
@@ -68,6 +76,9 @@ Bundle 'gmarik/vundle'
     Bundle 'msanders/snipmate.vim'
     " Tagbar is a vim plugin for browsing the tags of source code files.
     Bundle 'majutsushi/tagbar'
+    "Vim text objects provide a convenient way to select and operate on various types of objects. These objects 
+    "include regions surrounded by various types of brackets and various parts of language (ie sentences, paragraphs, etc). 
+    Bundle 'michaeljsmith/vim-indent-object'
     " The NERD tree allows you to explore your filesystem and to open files and directories.
     Bundle 'scrooloose/nerdtree'
     " The NERD commenter provides many different commenting operations and styles which are invoked via key mappings and a menu
@@ -81,13 +92,7 @@ Bundle 'gmarik/vundle'
     Bundle 'tpope/vim-surround'
     " Bebop is a tool for rapid web development. Using vim-bebop you can evaluate code in Vim directly in a browser,
     " introspect, and even get completions for both Javascript and Coffeescript files.
-    Bundle 'zeekay/vim-bebop'
-" vim-scripts repos
-    " Bundle 'L9'
-    " Bundle 'FuzzyFinder'
-" non github repos
-    " Bundle 'git://git.wincent.com/command-t.git'
-
+    " does not work so far -> Bundle 'zeekay/vim-bebop'
 filetype plugin indent on     " required!
 
 
