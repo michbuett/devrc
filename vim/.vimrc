@@ -6,7 +6,7 @@ set number            " Show line numbers
 set ruler             " Show line and column number
 syntax enable         " Turn on syntax highlighting allowing local overrides
 set backspace=indent,eol,start    " backspace through everything in insert mode
-
+set wmh=0             " sets min height of windows to zero
 " searching
 set hlsearch    " highlight matches
 set incsearch   " incremental searching
@@ -162,6 +162,15 @@ set listchars+=precedes:<         " The character to show in the last column whe
     :map h <A-h>
     :map l <A-l>
 
+" easier commands with german keyboard layout
+    nmap . :
+
+" common saving
+    "nmap: <C-s> :write
+
+" avoid <Esc>
+    :map <C-c> <Esc>
+
 " format entire file
     :map <leader>fa gg=G
 
@@ -217,6 +226,22 @@ set listchars+=precedes:<         " The character to show in the last column whe
     vmap <S-h> <Left>
     vmap <S-Right> <Right>
     vmap <S-l> <Right>
+
+" Remap window commands
+    map <leader>ws <Esc>:wincmd s<CR>
+    map <leader>wv <Esc>:wincmd v<CR>
+    map <leader>wc <Esc>:wincmd c<CR>
+    map <leader>w+ <Esc>:wincmd _<CR>
+    map <leader>w# <Esc>:wincmd <Bar><CR>
+    map <leader>w= <Esc>:wincmd =<CR>
+    map <C-Down> <Esc>:wincmd j<CR>:wincmd _<CR>
+    map <C-j> <Esc>:wincmd j<CR>:wincmd _<CR>
+    map <C-Up> <Esc>:wincmd k<CR>:wincmd _<CR>
+    map <C-k> <Esc>:wincmd k<CR>:wincmd _<CR>
+    map <C-Left> <Esc>:wincmd h<CR>
+    map <C-h> <Esc>:wincmd h<CR>
+    map <C-Right> <Esc>:wincmd l<CR>
+    map <C-l> <Esc>:wincmd l<CR>
 
 " trigger NERDTree, Tagbar $ Co.
     map <leader>n <Esc>:NERDTreeToggle<CR>
