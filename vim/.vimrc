@@ -246,3 +246,6 @@ set listchars+=precedes:<         " The character to show in the last column whe
 " trigger NERDTree, Tagbar $ Co.
     map <leader>n <Esc>:NERDTreeToggle<CR>
     map <leader>t <Esc>:TagbarToggle<CR>
+
+    nmap oi aI
+    vmap oi aI
