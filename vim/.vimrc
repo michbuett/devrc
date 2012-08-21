@@ -70,6 +70,9 @@ Bundle 'gmarik/vundle'
     Bundle 'ervandew/supertab'
     " jslint validator for vim
     Bundle 'hallettj/jslint.vim'
+    " mustache.vim is a simple plugin for working with mustache templates. It has both syntax hilighting and indenting, which just borrows from html
+    " indent plugin.
+    Bundle 'juvenn/mustache.vim'
     " Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
     Bundle 'kien/ctrlp.vim'
     " snipMate.vim aims to be a concise vim script that implements some of TextMate's snippets features in Vim.
@@ -85,6 +88,8 @@ Bundle 'gmarik/vundle'
     Bundle 'scrooloose/nerdcommenter'
     " Syntastic is a syntax checking plugin that runs files through external syntax checkers and displays any resulting errors to the user.
     Bundle 'scrooloose/syntastic'
+    " Vim runtime files for Haml, Sass, and SCSS
+    Bundle 'tpope/vim-haml'
     " fugitive.vim may very well be the best Git wrapper of all time.
     Bundle 'tpope/vim-fugitive'
     " Surround.vim is all about surroundings: parentheses, brackets, quotes, XML tags, and more. The plugin provides
