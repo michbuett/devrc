@@ -75,13 +75,13 @@ Bundle 'gmarik/vundle'
     Bundle 'juvenn/mustache.vim'
     " Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
     Bundle 'kien/ctrlp.vim'
-    " snipMate.vim aims to be a concise vim script that implements some of TextMate's snippets features in Vim.
-    Bundle 'msanders/snipmate.vim'
     " Tagbar is a vim plugin for browsing the tags of source code files.
     Bundle 'majutsushi/tagbar'
     "Vim text objects provide a convenient way to select and operate on various types of objects. These objects 
     "include regions surrounded by various types of brackets and various parts of language (ie sentences, paragraphs, etc). 
     Bundle 'michaeljsmith/vim-indent-object'
+    " UltiSnips is the Ultimate solution for snippets under Vim
+    Bundle 'SirVer/ultisnips'
     " The NERD tree allows you to explore your filesystem and to open files and directories.
     Bundle 'scrooloose/nerdtree'
     " The NERD commenter provides many different commenting operations and styles which are invoked via key mappings and a menu
