@@ -258,3 +258,12 @@ set listchars+=precedes:<         " The character to show in the last column whe
 
     nmap oi aI
     vmap oi aI
+
+
+"======================================================================================================================
+" => local settings
+"======================================================================================================================
+
+if filereadable(expand("~/.vimrc.local"))
+    source ~/.vimrc.local
+endif
