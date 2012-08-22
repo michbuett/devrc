@@ -161,16 +161,6 @@ set listchars+=precedes:<         " The character to show in the last column whe
 "======================================================================================================================
 :let mapleader = ","
 
-" fix putty escape sequences
-    :map k <A-k>
-    :map j <A-j>
-    :map h <A-h>
-    :map l <A-l>
-    :map [A <C-Up>
-    :map [B <C-Down>
-    :map [D <C-Left>
-    :map [C <C-Right>
-
 " easier commands with german keyboard layout
     nmap . :
 
