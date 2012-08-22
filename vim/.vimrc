@@ -80,6 +80,8 @@ Bundle 'majutsushi/tagbar'
 " === Vim text objects provide a convenient way to select and operate on various types of objects. These objects 
 "include regions surrounded by various types of brackets and various parts of language (ie sentences, paragraphs, etc). 
 Bundle 'michaeljsmith/vim-indent-object'
+" === JavaScript bundle for vim, this bundle provides syntax and indent plugins.
+Bundle 'pangloss/vim-javascript'
 " === UltiSnips is the Ultimate solution for snippets under Vim
 Bundle 'SirVer/ultisnips'
 " === The NERD tree allows you to explore your filesystem and to open files and directories.
