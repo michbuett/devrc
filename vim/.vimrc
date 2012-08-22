@@ -34,7 +34,7 @@ endif
 "----------------------------------------------------------------------------------------------------------------------
 "
 " Brief help
-" :BundleList          - list configured bundles
+
 " :BundleInstall(!)    - install(update) bundles
 " :BundleSearch(!) foo - search(or refresh cache first) for foo
 " :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
@@ -164,10 +164,10 @@ set listchars+=precedes:<         " The character to show in the last column whe
 :let mapleader = ","
 
 " easier commands with german keyboard layout
-    nmap . :
+    nmap ö :
 
 " common saving
-    "nmap: <C-s> :write
+    "nmap: <C-s> :w<CR>
 
 " avoid <Esc>
     :map <C-c> <Esc>
@@ -232,6 +232,8 @@ set listchars+=precedes:<         " The character to show in the last column whe
     map <leader>ws <Esc>:wincmd s<CR>
     map <leader>wv <Esc>:wincmd v<CR>
     map <leader>wc <Esc>:wincmd c<CR>
+    map <leader>wn <Esc>:wincmd n<CR>
+    map <leader>wo <Esc>:wincmd o<CR>
     map <leader>w+ <Esc>:wincmd _<CR>
     map <leader>w# <Esc>:wincmd <Bar><CR>
     map <leader>w= <Esc>:wincmd =<CR>
