@@ -197,7 +197,7 @@ set listchars+=precedes:<         " The character to show in the last column whe
     vmap <A-j> :m'>+<CR>gv=gv
     vmap <A-Down> :m'>+<CR>gv=gv
 
-" Intent lines using <Left> and <Right>
+" Indent lines using <Left> and <Right>
     vmap <A-Right> >gv
     vmap <A-l> >gv
     nmap <A-Right> >>
