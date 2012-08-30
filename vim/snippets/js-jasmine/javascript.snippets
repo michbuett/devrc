@@ -1,0 +1,21 @@
+###########################################################################
+#                             Jasmine Snippets                            #
+###########################################################################
+
+snippet :desc "describe('...', function () {...}"
+describe('${1:Description if test suite}', function () {
+    $0
+});
+endsnippet
+
+snippet :ba "beforeEach(...); afterEach(...);"
+beforeEach(function () {
+    ${1:// prepare code...}
+});
+
+afterEach(function () {
+    ${2://cleanup code...}
+});
+endsnippet
+
+# vim:ft=snippets:
