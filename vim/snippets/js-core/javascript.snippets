@@ -1,26 +1,27 @@
 ###########################################################################
-#                            TextMate Snippets                            #
+#                         Basic JavaScript Snippets                       #
 ###########################################################################
-snippet ,fn "function (fun)"
+
+snippet :fn "function fname (...) {...} "
 function ${1:function_name} (${2:argument}) {
     ${0:// body...}
 }
 endsnippet
 
-snippet :f "Object Method"
+snippet :fo "fname: function (...) {...}"
 ${1:method_name}: function (${3:attribute}) {
 	$0
 }${10:,}
 endsnippet
 
-snippet ,for "for (...) {...}"
+snippet :for "for (...) {...}"
 var ${1:i}, ${2:l};
 for ($1 = 0, $2 = ${3:Things}.length; $1 < $2; $1++) {
 	${4:$3[$1]}$0
 }
 endsnippet
 
-snippet ,if "if"
+snippet :if "if (...) {...}"
 if (${1:true}) {
     $0
 }
