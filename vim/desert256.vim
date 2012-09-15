@@ -260,7 +260,7 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
     "LineNr
     call <SID>X("ModeMsg", "daa520", "", "")
     call <SID>X("MoreMsg", "2e8b57", "", "")
-    call <SID>X("NonText", "addbe7", "000000", "bold")
+    call <SID>X("NonText", "addbe7", "", "bold")
     call <SID>X("Question", "00ff7f", "", "")
     call <SID>X("Search", "f5deb3", "cd853f", "")
     call <SID>X("SpecialKey", "9acd32", "", "")
@@ -287,8 +287,8 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
     call <SID>X("Ignore", "666666", "", "")
     "Error
     call <SID>X("Todo", "ff4500", "eeee00", "")
-    call <SID>X("Error", "000000", "", "")
-    call <SID>X("ErrorMsg", "000000", "", "")
+    call <SID>X("Error", "ff4500", "", "undercurl")
+    call <SID>X("ErrorMsg", "ff4500", "", "undercurl")
     call <SID>X("JSLintError", "ff4500", "", "undercurl")
 
     " delete functions {{{
@@ -337,7 +337,7 @@ else
     hi Type          ctermfg=2
     hi Underlined    cterm=underline ctermfg=5
     hi Ignore        ctermfg=darkgrey
-    hi Error         cterm=bold ctermfg=7 ctermbg=1
+    hi Error         cterm=underline ctermfg=red
 endif
 
 " vim: set fdl=0 fdm=marker:
