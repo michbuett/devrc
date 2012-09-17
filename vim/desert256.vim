@@ -245,7 +245,7 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 
     " highlight groups
     call <SID>X("Cursor", "708090", "000000", "")
-    call <SID>X("CursorLine", "", "303039", "none")
+    call <SID>X("CursorLine", "FFFFFF", "505050", "none")
     "CursorIM
     "Directory
     "DiffAdd
@@ -257,7 +257,7 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
     call <SID>X("Folded", "ffd700", "4d4d4d", "")
     call <SID>X("FoldColumn", "d2b48c", "4d4d4d", "")
     call <SID>X("IncSearch", "708090", "f0e68c", "")
-    "LineNr
+    call <SID>X("LineNr", "a0a0a0", "040404", "")
     call <SID>X("ModeMsg", "daa520", "", "")
     call <SID>X("MoreMsg", "2e8b57", "", "")
     call <SID>X("NonText", "addbe7", "", "bold")
