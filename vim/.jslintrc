@@ -1,5 +1,6 @@
 /*jslint browser: true, regexp: true, sloppy: true, nomen: true, vars: true, plusplus: true*/
-/*global jQuery, $ , SB, GL, Backbone, _, window, document, alert, Mustache, Modernizr, jasmine, describe, it, expect, beforeEach, afterEach, waits, waitFor, runs*/
-
+/*global window, document, alert, setTimeout, setInterval*/
+/*global jasmine, describe, it, expect, beforeEach, afterEach, waits, waitFor, runs*/
+/*global require, process, module, exports*/
 /* vim: set ft=javascript: */
 
