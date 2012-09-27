@@ -3,7 +3,7 @@
 ###########################################################################
 
 snippet :desc "describe('...', function () {...}"
-describe('${1:Description if test suite}', function () {
+describe('${1:Description of test suite}', function () {
     $0
 });
 endsnippet
@@ -12,9 +12,19 @@ snippet :ba "beforeEach(...); afterEach(...);"
 beforeEach(function () {
     ${1:// prepare code...}
 });
-
 afterEach(function () {
     ${2://cleanup code...}
+});
+endsnippet
+
+snippet :it "it('...', function () {...});"
+it('${1:description}', function () {
+    // prepare
+    $2
+    // execute
+    $3
+    // verify
+    $4
 });
 endsnippet
 

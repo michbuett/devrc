@@ -38,7 +38,7 @@ snippet :potion "A new potion for alchemy.js"
      */
     alchemy.addFormula({
         name: '$1',
-        extend: '$2,
+        extend: '$2',
         overrides: {
             init: function () {
                 ${4:// init code here}
@@ -46,6 +46,13 @@ snippet :potion "A new potion for alchemy.js"
         }
     });
 }());
+endsnippet
+
+snippet :ingr "An Ingredient for a potion {key: ..., ptype: ...}"
+{
+    key: '${1:key}',
+    ptype: '${2:Ingredient}'
+}
 endsnippet
 
 # vim:ft=snippets:
