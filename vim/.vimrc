@@ -170,7 +170,7 @@ exe 'source  ' . expand($DEVRC_HOME) . '/vim/.vimrc.keys'
 " => various other settings
 "======================================================================================================================
 
-let g:UltiSnipsSnippetDirectories=[expand("$DEVRC_HOME/vim/snippets/js-core"), expand("$DEVRC_HOME/vim/snippets/js-jasmine")]
+let g:UltiSnipsSnippetDirectories=[expand("$DEVRC_HOME/vim/snippets/js-core"), expand("$DEVRC_HOME/vim/snippets/js-jasmine"), expand("$DEVRC_HOME/vim/snippets/js-alchemy")]
 
 
 "======================================================================================================================
