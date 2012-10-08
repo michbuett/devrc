@@ -142,10 +142,10 @@ if [ -e ~/.bashrc ]; then
 fi
 
 echo -n "Create .bashrc... "
-echo "[ -z "$PS1" ] && return" > .bashrc
+echo "[ -z \"\$PS1\" ] && return" > ~/.bashrc
 echo "export DEVRC_HOME=$DEVRC_ROOT" >> ~/.bashrc
 echo "source $DEVRC_ROOT/bash/.bashrc.general" >> ~/.bashrc
 echo "source $DEVRC_ROOT/bash/.bashrc.aliases" >> ~/.bashrc
 echo "source $DEVRC_ROOT/bash/.bashrc.prompt" >> ~/.bashrc
-echo "if [ -f ~/.bashrc.local ]; then source ~/.bashrc.local fi" >> ~./.bashrc
+echo "if [ -f ~/.bashrc.local ]; then source \"~/.bashrc.local\"; fi" >> ~/.bashrc
 echo "done"
