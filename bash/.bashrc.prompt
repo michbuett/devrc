@@ -1,44 +1,44 @@
 source "$DEVRC_HOME/bash/colors.sh"
 
-function get_workdir {
-    local dir=$(pwd)
-    local start=15
-    local end=15
-    local max=$(($start + $end + 5))
-
-    if [ ${#dir} -gt $max ]; then
-        local offset=$((${#dir} - $end))
-        dir="${dir:0:$start}..${dir:$offset}"
+# Determines the status of the last command (a green checkmark for success
+# and a red x for a failure)
+function get_status {
+    local last_status=$?
+    if [ $last_status -eq 0 ]; then
+        local checkmark=$(echo -e "\xE2\x9C\x93")
+        last_status="$Green($checkmark)$Color_Off"
+    else
+        last_status="$Red(x)$Color_Off"
     fi
-
-    echo $dir
+    echo "$last_status"
 }
 
-
+# Determines the name of the current git branch
 function get_git_branch {
     echo $(git branch --no-color 2> /dev/null | grep '*' | sed 's/\*//g' | sed 's/ //g')
 }
 
+# Determines the git status (M - modified, ? - untracked files, ...)
 function get_git_flags {
     local tmp_flags=$(git status --porcelain 2> /dev/null | cut -c1-2 | sed 's/ //g' | cut -c1 | sort | uniq)
     echo "$(echo $tmp_flags | sed 's/ //g')"
 }
 
 function set_prompt {
-    local dir=$(get_workdir)
+    local last_status=$(get_status)
     local branch=$(get_git_branch)
-    local flags
-    local prompt="$Green\u@\h $IWhite$dir$Color_Off"
+    local freemem=$(sed -n "s/MemFree:[\t ]\+\([0-9]\+\) kB/\1/p" /proc/meminfo)
+    local totalmem=$(sed -n "s/MemTotal:[\t ]\+\([0-9]\+\) kB/\1/p" /proc/meminfo)
+    local prompt="\n[\d] $last_status $Cyan\j:$((freemem / 1024))/$((totalmem /1024))MB $IWhite\u@\h:\w$Color_Off"
 
     if [ $branch ]; then
+        local flags=$(get_git_flags)
         prompt="$prompt ($Cyan$branch$Color_Off)"
-        flags=$(get_git_flags)
 
         if [ $flags ]; then
-            prompt="$prompt[$Purple$flags$Color_Off]"
+            prompt="$prompt[$BPurple$flags$Color_Off]"
         fi
     fi
-    prompt="$prompt \d"
 
     PS1="$prompt \n$BIGreen\$> $Color_Off"
 }
