@@ -121,13 +121,13 @@ if [ -e ~/.bashrc ]; then
         case $input in
             [Ll]* )
                 echo -n "Renaming exiting .bashrc to .bashrc.local... "
-                mv ~/.bashrc ~/bashrc.local
+                mv ~/.bashrc ~/.bashrc.local
                 echo "done"
                 break;;
 
             [Bb]* )
                 echo -n "Backup exiting .bashrc at .bashrc.$TIMESTAMP... "
-                mv ~/.bashrc ~/bashrc.$TIMESTAMP
+                mv ~/.bashrc ~/.bashrc.$TIMESTAMP
                 echo "done"
                 break;;
 
@@ -142,8 +142,10 @@ if [ -e ~/.bashrc ]; then
 fi
 
 echo -n "Create .bashrc... "
-echo "export DEVRC_HOME=$DEVRC_ROOT" > ~/.bashrc
+echo "[ -z "$PS1" ] && return" > .bashrc
+echo "export DEVRC_HOME=$DEVRC_ROOT" >> ~/.bashrc
 echo "source $DEVRC_ROOT/bash/.bashrc.general" >> ~/.bashrc
 echo "source $DEVRC_ROOT/bash/.bashrc.aliases" >> ~/.bashrc
 echo "source $DEVRC_ROOT/bash/.bashrc.prompt" >> ~/.bashrc
+echo "if [ -f ~/.bashrc.local ]; then source ~/.bashrc.local fi" >> ~./.bashrc
 echo "done"
