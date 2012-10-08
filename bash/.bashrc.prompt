@@ -28,7 +28,7 @@ function set_prompt {
     local dir=$(get_workdir)
     local branch=$(get_git_branch)
     local flags
-    local prompt="$BGreen\u $IWhite$dir$Color_Off"
+    local prompt="$Green\u@\h $IWhite$dir$Color_Off"
 
     if [ $branch ]; then
         prompt="$prompt ($Cyan$branch$Color_Off)"
@@ -38,8 +38,9 @@ function set_prompt {
             prompt="$prompt[$Purple$flags$Color_Off]"
         fi
     fi
+    prompt="$prompt \d"
 
-    PS1="\n$prompt $BIGreen\$> $Color_Off"
+    PS1="$prompt \n$BIGreen\$> $Color_Off"
 }
 
 PROMPT_COMMAND=set_prompt
