@@ -67,10 +67,8 @@ Bundle 'gmarik/vundle'
 Bundle 'ap/vim-css-color'
 " === Supertab is a vim plugin which allows you to use <Tab> for all your insert completion needs (:help ins-completion).
 Bundle 'ervandew/supertab'
-" === jslint validator for vim
-Bundle 'hallettj/jslint.vim'
-" === mustache.vim is a simple plugin for working with mustache templates. It has both syntax hilighting and indenting, which just borrows from html
-" indent plugin.
+" === mustache.vim is a simple plugin for working with mustache templates.
+" It has both syntax hilighting and indenting, which just borrows from html indent plugin.
 Bundle 'juvenn/mustache.vim'
 " === Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
 Bundle 'kien/ctrlp.vim'
@@ -93,7 +91,10 @@ Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-fugitive'
 
 " DISABLED
-" === The NERD commenter provides many different commenting operations and styles which are invoked via key mappings and a menu
+" === jslint validator for vim
+" Bundle 'hallettj/jslint.vim'
+" === The NERD commenter provides many different commenting operations and styles which are
+" invoked via key mappings and a menu
 " Bundle 'scrooloose/nerdcommenter'
 " === Surround.vim is all about surroundings: parentheses, brackets, quotes, XML tags, and more. The plugin provides
 " mappings to easily delete, change and add such surroundings in pairs.
