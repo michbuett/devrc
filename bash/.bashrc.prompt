@@ -1,48 +1,46 @@
-function rd {
-  git branch > /dev/null 2>&1 || return 1
-  cd "$(git rev-parse --show-cdup)"
+source "$DEVRC_HOME/bash/colors.sh"
+
+# Determines the status of the last command (a green checkmark for success
+# and a red x for a failure)
+function get_status {
+    local last_status=$?
+    if [ $last_status -eq 0 ]; then
+        local checkmark=$(echo -e "\xE2\x9C\x93")
+        last_status="$Green($checkmark)$Color_Off"
+    else
+        last_status="$Red(x)$Color_Off"
+    fi
+    echo "$last_status"
 }
 
-function set_git_prompt {
-  local tmp_flags
-  local flags
-  local branch
+# Determines the name of the current git branch
+function get_git_branch {
+    echo $(git branch --no-color 2> /dev/null | grep '*' | sed 's/\*//g' | sed 's/ //g')
+}
 
-  branch=$(git branch --no-color 2> /dev/null | grep '*' | sed 's/\*//g' | sed 's/ //g')
-  tmp_flags=$(git status --porcelain 2> /dev/null | cut -c1-2 | sed 's/ //g' | cut -c1 | sort | uniq)
-  flags="$(echo $tmp_flags | sed 's/ //g')"
+# Determines the git status (M - modified, ? - untracked files, ...)
+function get_git_flags {
+    local tmp_flags=$(git status --porcelain 2> /dev/null | cut -c1-2 | sed 's/ //g' | cut -c1 | sort | uniq)
+    echo "$(echo $tmp_flags | sed 's/ //g')"
+}
 
-  if [ $branch ] || [ $flags  ]; then
-    if [[ "$BGP_GIT_ROOT_DIRECTORY" != $(git rev-parse --show-toplevel) ]]; then
-      BGP_GIT_ROOT_DIRECTORY=$(git rev-parse --show-toplevel)
-      BGP_GIT_BRANCH=""
-    fi
-
-    if [[ -e "$BGP_TMP_FILE" ]]; then
-        source "$BGP_TMP_FILE"
-        rm $BGP_TMP_FILE
-    fi
+function set_prompt {
+    local last_status=$(get_status)
+    local branch=$(get_git_branch)
+    local freemem=$(sed -n "s/MemFree:[\t ]\+\([0-9]\+\) kB/\1/p" /proc/meminfo)
+    local totalmem=$(sed -n "s/MemTotal:[\t ]\+\([0-9]\+\) kB/\1/p" /proc/meminfo)
+    local prompt="\n[\d] $last_status $Cyan\j:$((freemem / 1024))/$((totalmem /1024))MB $IWhite\u@\h:\w$Color_Off"
 
     if [ $branch ]; then
-      branch="\[\e[0;36m\]${branch}\[\e[0m\]"
-    else
-      branch="\[\e[0;36m\]waiting for first commit\[\e[0m\]"
+        local flags=$(get_git_flags)
+        prompt="$prompt ($Cyan$branch$Color_Off)"
+
+        if [ $flags ]; then
+            prompt="$prompt[$BPurple$flags$Color_Off]"
+        fi
     fi
 
-    if [ $flags ]; then
-      PS1="${BGP_ORIGINAL_PS1/\\$ /}(${branch}|\[\e[0;35m\]${flags}\[\e[0m\])\$ "
-    else
-      PS1="${BGP_ORIGINAL_PS1/\\$ /}(${branch})\$ "
-    fi
-
-  else
-    PS1=$BGP_ORIGINAL_PS1
-  fi
+    PS1="$prompt \n$BIGreen\$> $Color_Off"
 }
 
-BGP_GIT_ROOT_DIRECTORY=""
-BGP_TMP_FILE="/tmp/BGP_$BASHPID"
-export BGP_TMP_FILE
-
-BGP_ORIGINAL_PS1="\[\e[32;1m\]\u: ../\W> \[\e[0m\]"
-PROMPT_COMMAND=set_git_prompt
+PROMPT_COMMAND=set_prompt
