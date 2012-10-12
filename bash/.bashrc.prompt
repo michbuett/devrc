@@ -40,7 +40,7 @@ function set_prompt {
         fi
     fi
 
-    PS1="$prompt \n$BIGreen\$> $Color_Off"
+    PS1="$prompt \n$BIGreen\$ $Color_Off"
 }
 
 PROMPT_COMMAND=set_prompt
