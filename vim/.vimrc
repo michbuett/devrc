@@ -72,6 +72,8 @@ Bundle 'ervandew/supertab'
 Bundle 'juvenn/mustache.vim'
 " === Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
 Bundle 'kien/ctrlp.vim'
+" === The ultimate vim statusline utility for vim
+Bundle 'Lokaltog/vim-powerline'
 " === Tagbar is a vim plugin for browsing the tags of source code files.
 Bundle 'majutsushi/tagbar'
 " === Vim text objects provide a convenient way to select and operate on various types of objects. These objects 
