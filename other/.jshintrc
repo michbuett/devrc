@@ -17,7 +17,7 @@
     // Globals
     "predef"        : [
         // for jasmine testing framework
-        "jasmine", "describe", "it", "beforeEach", "afterEach", "spyOn", "waits", "waitsFor", "runs"
+        "jasmine", "describe", "it", "beforeEach", "afterEach", "spyOn", "waits", "waitsFor", "runs", "expect"
     ],
 
     "es5"           : true,   // Allow ECMAScript 5 syntax.
@@ -38,3 +38,4 @@
     "white"         : true,   // Check against strict whitespace and indentation rules.
     "indent"        : 4       // Specify indentation spacing
 }
+// vim: set ft=javascript:
