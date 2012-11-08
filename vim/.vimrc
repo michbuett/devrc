@@ -63,6 +63,8 @@ Bundle 'gmarik/vundle'
 " * non github repos
 "     Bundle 'git://git.wincent.com/command-t.git'
 "
+Bundle 'michbuett/vim-keys'
+
 " === underlays the hexadecimal CSS colorcodes with their real color. The foreground color is selected appositely. So #FF0000 will look as hot as a fire engine!
 Bundle 'ap/vim-css-color'
 " === Supertab is a vim plugin which allows you to use <Tab> for all your insert completion needs (:help ins-completion).
@@ -165,12 +167,6 @@ set listchars+=precedes:<   " The character to show in the last column when wrap
 
 " remove trailing spaces when saving buffer
 autocmd BufWritePre * :%s/\s\+$//e
-
-"======================================================================================================================
-" => Key bindings
-"======================================================================================================================
-
-exe 'source  ' . expand($DEVRC_HOME) . '/vim/.vimrc.keys'
 
 
 "======================================================================================================================
