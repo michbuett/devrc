@@ -63,51 +63,25 @@ Bundle 'gmarik/vundle'
 " * non github repos
 "     Bundle 'git://git.wincent.com/command-t.git'
 "
+" ===== own plugins =====
 Bundle 'michbuett/vim-keys'
 
-" === underlays the hexadecimal CSS colorcodes with their real color. The foreground color is selected appositely. So #FF0000 will look as hot as a fire engine!
+" ===== 3rd party plugins =====
 Bundle 'ap/vim-css-color'
-" === Supertab is a vim plugin which allows you to use <Tab> for all your insert completion needs (:help ins-completion).
 Bundle 'ervandew/supertab'
-" === mustache.vim is a simple plugin for working with mustache templates.
-" It has both syntax hilighting and indenting, which just borrows from html indent plugin.
 Bundle 'juvenn/mustache.vim'
-" === Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
 Bundle 'kien/ctrlp.vim'
-" === The ultimate vim statusline utility for vim
 Bundle 'Lokaltog/vim-powerline'
-" === Tagbar is a vim plugin for browsing the tags of source code files.
 Bundle 'majutsushi/tagbar'
-" === This plugin is a front for the Perl module App::Ack. Ack can be used as a replacement for 99% of the uses of grep
 Bundle 'mileszs/ack.vim'
-" === Vim text objects provide a convenient way to select and operate on various types of objects. These objects
-"include regions surrounded by various types of brackets and various parts of language (ie sentences, paragraphs, etc).
 Bundle 'michaeljsmith/vim-indent-object'
-" === JavaScript bundle for vim, this bundle provides syntax and indent plugins.
 Bundle 'pangloss/vim-javascript'
-" === UltiSnips is the Ultimate solution for snippets under Vim
 Bundle 'SirVer/ultisnips'
-" === The NERD tree allows you to explore your filesystem and to open files and directories.
 Bundle 'scrooloose/nerdtree'
-" === Syntastic is a syntax checking plugin that runs files through external syntax checkers and displays any resulting errors to the user.
 Bundle 'scrooloose/syntastic'
-" === Vim runtime files for Haml, Sass, and SCSS
 Bundle 'tpope/vim-haml'
-" === fugitive.vim may very well be the best Git wrapper of all time.
 Bundle 'tpope/vim-fugitive'
 
-" DISABLED
-" === jslint validator for vim
-" Bundle 'hallettj/jslint.vim'
-" === The NERD commenter provides many different commenting operations and styles which are
-" invoked via key mappings and a menu
-" Bundle 'scrooloose/nerdcommenter'
-" === Surround.vim is all about surroundings: parentheses, brackets, quotes, XML tags, and more. The plugin provides
-" mappings to easily delete, change and add such surroundings in pairs.
-" Bundle 'tpope/vim-surround'
-" === Bebop is a tool for rapid web development. Using vim-bebop you can evaluate code in Vim directly in a browser,
-" introspect, and even get completions for both Javascript and Coffeescript files.
-" does not work so far -> Bundle 'zeekay/vim-bebop'
 filetype plugin indent on     " required!
 
 
