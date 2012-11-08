@@ -34,3 +34,4 @@ alias rce='cd /home/dtmp/workspace/trunk/gamesload-client;vim -S /home/dtmp/dtmp
 alias rcm='sudo dtmp-vm-mount-gamesload-client mount trunk'
 alias rcu='sudo dtmp-vm-mount-gamesload-client umount trunk'
 alias rccss='rcg; bash src/main/resources/sass/update-CSS.sh update force'
+alias rcf='find . -name "*.sh" -exec chmod +x {} \;'
