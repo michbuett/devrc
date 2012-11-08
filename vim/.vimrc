@@ -50,7 +50,7 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " let Vundle manage Vundle
-" required! 
+" required!
 Bundle 'gmarik/vundle'
 
 " Add Bundles here:
@@ -76,8 +76,10 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'Lokaltog/vim-powerline'
 " === Tagbar is a vim plugin for browsing the tags of source code files.
 Bundle 'majutsushi/tagbar'
-" === Vim text objects provide a convenient way to select and operate on various types of objects. These objects 
-"include regions surrounded by various types of brackets and various parts of language (ie sentences, paragraphs, etc). 
+" === This plugin is a front for the Perl module App::Ack. Ack can be used as a replacement for 99% of the uses of grep
+Bundle 'mileszs/ack.vim'
+" === Vim text objects provide a convenient way to select and operate on various types of objects. These objects
+"include regions surrounded by various types of brackets and various parts of language (ie sentences, paragraphs, etc).
 Bundle 'michaeljsmith/vim-indent-object'
 " === JavaScript bundle for vim, this bundle provides syntax and indent plugins.
 Bundle 'pangloss/vim-javascript'
