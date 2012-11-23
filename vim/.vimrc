@@ -69,6 +69,7 @@ Bundle 'michbuett/vim-keys'
 " ===== 3rd party plugins =====
 Bundle 'ap/vim-css-color'
 Bundle 'ervandew/supertab'
+Bundle 'gregsexton/gitv'
 Bundle 'juvenn/mustache.vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Lokaltog/vim-powerline'
