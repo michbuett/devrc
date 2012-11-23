@@ -28,4 +28,14 @@ it('${1:description}', function () {
 });
 endsnippet
 
+snippet :mock "SB.mockGlobals({...});"
+SB.mockGlobals({
+    'GL.global.messages': jasmine.createSpyObj('messages', ['on', 'off', 'trigger'])
+});
+endsnippet
+
+snippet :restore "SB.restoreGlobals();"
+SB.restoreGlobals();
+endsnippet
+
 # vim:ft=snippets:
