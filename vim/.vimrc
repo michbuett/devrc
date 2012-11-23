@@ -148,8 +148,15 @@ autocmd BufWritePre * :%s/\s\+$//e
 " => various other settings
 "======================================================================================================================
 
-let g:UltiSnipsSnippetDirectories=[expand("$DEVRC_HOME/vim/snippets/js-core"), expand("$DEVRC_HOME/vim/snippets/js-jasmine"), expand("$DEVRC_HOME/vim/snippets/js-alchemy")]
+let g:UltiSnipsSnippetDirectories=[
+    \ expand("$DEVRC_HOME/vim/snippets/js-core"),
+    \ expand("$DEVRC_HOME/vim/snippets/js-jasmine"),
+    \ expand("$DEVRC_HOME/vim/snippets/js-alchemy")]
 
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.git|target)$',
+  \ 'file': '\v\.(css)$'
+  \ }
 
 "======================================================================================================================
 " => local settings
