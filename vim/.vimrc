@@ -92,6 +92,11 @@ filetype plugin indent on     " required!
 
 if has("gui_running")
     colorscheme desert
+    set guioptions-=r " disable right scrollbar
+    set guioptions-=T " disable toolbar
+    set guioptions-=m " disable menubar
+    set guioptions-=l " disable left scrollbar
+    set guioptions-=L " disable dito
 else
     set t_Co=256
     colorscheme desert256
