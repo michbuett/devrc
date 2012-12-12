@@ -29,7 +29,9 @@ function set_prompt {
     local branch=$(get_git_branch)
     local freemem=$(sed -n "s/MemFree:[\t ]\+\([0-9]\+\) kB/\1/p" /proc/meminfo)
     local totalmem=$(sed -n "s/MemTotal:[\t ]\+\([0-9]\+\) kB/\1/p" /proc/meminfo)
-    local prompt="\n[\d] $last_status $Cyan\j:$((freemem / 1024))/$((totalmem /1024))MB $IWhite\u@\h:\w$Color_Off"
+    local c=$(if [ $UID == 0 ]; then echo $BRed; else echo $IWhite; fi)
+    local build=$(if [ -e /var/lib/dtmp/dtmp-deployment/metadata/build_id ]; then echo "[$(cat /var/lib/dtmp/dtmp-deployment/metadata/build_id)]"; fi)
+    local prompt="\n[\d] $last_status $Cyan$((freemem / 1024))/$((totalmem /1024))MB $c\u@\h:\w$Color_Off"
 
     if [ $branch ]; then
         local flags=$(get_git_flags)
