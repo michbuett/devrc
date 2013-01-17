@@ -24,14 +24,21 @@ function get_git_flags {
     echo "$(echo $tmp_flags | sed 's/ //g')"
 }
 
+function get_build_id {
+    local file=/var/lib/dtmp/dtmp-deployment/metadata/build_id
+    if [ -e $file ]; then
+        echo "$Yellow[$(cat $file)]"
+    fi
+}
+
 function set_prompt {
     local last_status=$(get_status)
     local branch=$(get_git_branch)
     local freemem=$(sed -n "s/MemFree:[\t ]\+\([0-9]\+\) kB/\1/p" /proc/meminfo)
     local totalmem=$(sed -n "s/MemTotal:[\t ]\+\([0-9]\+\) kB/\1/p" /proc/meminfo)
     local c=$(if [ $UID == 0 ]; then echo $BRed; else echo $IWhite; fi)
-    local build=$(if [ -e /var/lib/dtmp/dtmp-deployment/metadata/build_id ]; then echo "[$(cat /var/lib/dtmp/dtmp-deployment/metadata/build_id)]"; fi)
-    local prompt="\n[\d] $last_status $Cyan$((freemem / 1024))/$((totalmem /1024))MB $c\u@\h:\w$Color_Off"
+    local build=$(get_build_id)
+    local prompt="\n[\d] $last_status $Cyan$((freemem / 1024))/$((totalmem /1024))MB $c\u@\h:\w$build$Color_Off"
 
     if [ $branch ]; then
         local flags=$(get_git_flags)
