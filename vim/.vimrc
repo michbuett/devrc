@@ -65,6 +65,7 @@ Bundle 'gmarik/vundle'
 "
 " ===== own plugins =====
 Bundle 'michbuett/vim-keys'
+Bundle 'michbuett/vim-colorschemes'
 
 " ===== 3rd party plugins =====
 Bundle 'ap/vim-css-color'
@@ -82,6 +83,7 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-fugitive'
+Bundle 'vim-scripts/AutoComplPop'
 
 filetype plugin indent on     " required!
 
@@ -91,7 +93,7 @@ filetype plugin indent on     " required!
 "======================================================================================================================
 
 if has("gui_running")
-    colorscheme desert
+    colorscheme x-desert
     set guioptions-=r " disable right scrollbar
     set guioptions-=T " disable toolbar
     set guioptions-=m " disable menubar
