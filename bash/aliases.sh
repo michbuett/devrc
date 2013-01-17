@@ -14,6 +14,14 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+# search and replace
+alias ack='ack-grep'
+function search-n-replace() {
+    pattern=$1
+    replacement=$2
+    #echo "ack -l \"$pattern\" | xargs perl -pi -E \"s/$pattern/$replacement/g\""
+    ack -l "$pattern" | xargs perl -pi -E "s/$pattern/$replacement/g"
+}
 
 # git shortcuts
 alias gst='git status'
@@ -35,5 +43,5 @@ alias rcm='sudo dtmp-vm-mount-gamesload-client mount trunk'
 alias rcu='sudo dtmp-vm-mount-gamesload-client umount trunk'
 alias rccss='rcg; bash src/main/resources/sass/update-CSS.sh update force'
 alias rcf='find . -name "*.sh" -exec chmod +x {} \;'
-alias rci='curl -X POST http://seb.devvm02.v1.dtmp.seitenbau.net/dtmp-backend-search/1.0/search/products/recreateindex'
+alias rci='curl -X POST http://seb.devvm01.v1.dtmp.seitenbau.net/dtmp-backend-search/1.0/search/products/recreateindex'
 alias rcvm='ssh dtmp@deploy.devvm01.v1.dtmp.seitenbau.net'
