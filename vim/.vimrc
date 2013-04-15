@@ -12,6 +12,7 @@ set hlsearch    " highlight matches
 set incsearch   " incremental searching
 set ignorecase  " searches are case insensitive...
 set smartcase   " ... unless they contain at least one capital letter
+set tags=./tags;/
 
 if has("statusline") && !&cp
     set laststatus=2  " always show the status bar
@@ -64,8 +65,9 @@ Bundle 'gmarik/vundle'
 "     Bundle 'git://git.wincent.com/command-t.git'
 "
 " ===== own plugins =====
-Bundle 'michbuett/vim-keys'
 Bundle 'michbuett/vim-colorschemes'
+Bundle 'michbuett/vim-keys'
+Bundle 'michbuett/vim-snippets'
 
 " ===== 3rd party plugins =====
 Bundle 'ap/vim-css-color'
@@ -73,6 +75,7 @@ Bundle 'ervandew/supertab'
 Bundle 'gregsexton/gitv'
 Bundle 'juvenn/mustache.vim'
 Bundle 'kien/ctrlp.vim'
+Bundle 'Lokaltog/vim-easymotion'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'majutsushi/tagbar'
 Bundle 'mileszs/ack.vim'
@@ -154,11 +157,6 @@ autocmd BufWritePre * :%s/\s\+$//e
 "======================================================================================================================
 " => various other settings
 "======================================================================================================================
-
-let g:UltiSnipsSnippetDirectories=[
-    \ expand("$DEVRC_HOME/vim/snippets/js-core"),
-    \ expand("$DEVRC_HOME/vim/snippets/js-jasmine"),
-    \ expand("$DEVRC_HOME/vim/snippets/js-alchemy")]
 
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](\.git|target)$',
