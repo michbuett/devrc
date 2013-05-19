@@ -5,8 +5,7 @@ source "$DEVRC_HOME/bash/colors.sh"
 function get_status {
     local last_status=$?
     if [ $last_status -eq 0 ]; then
-        local checkmark=$(echo -e "\xE2\x9C\x93")
-        last_status="$Green($checkmark)$Color_Off"
+        last_status="$Green(/)$Color_Off"
     else
         last_status="$Red(x)$Color_Off"
     fi
@@ -31,14 +30,23 @@ function get_build_id {
     fi
 }
 
+function get_mem_info {
+    local meminfo=""
+    if [ -r /proc/meminfo ]; then
+        local freemem=$(sed -n "s/MemFree:[\t ]\+\([0-9]\+\) kB/\1/p" /proc/meminfo)
+        local totalmem=$(sed -n "s/MemTotal:[\t ]\+\([0-9]\+\) kB/\1/p" /proc/meminfo)
+        meminfo="$Cyan$((freemem / 1024))/$((totalmem /1024))MB$Color_Off"
+    fi
+    echo $meminfo
+}
+
 function set_prompt {
     local last_status=$(get_status)
     local branch=$(get_git_branch)
-    local freemem=$(sed -n "s/MemFree:[\t ]\+\([0-9]\+\) kB/\1/p" /proc/meminfo)
-    local totalmem=$(sed -n "s/MemTotal:[\t ]\+\([0-9]\+\) kB/\1/p" /proc/meminfo)
     local c=$(if [ $UID == 0 ]; then echo $BRed; else echo $IWhite; fi)
+    local meminfo=$(get_mem_info)
     local build=$(get_build_id)
-    local prompt="\n[\d] $last_status $Cyan$((freemem / 1024))/$((totalmem /1024))MB $c\u@\h:\w$build$Color_Off"
+    local prompt="\n[\d] $last_status $meminfo $c\u@\h:\w$build$Color_Off"
 
     if [ $branch ]; then
         local flags=$(get_git_flags)
@@ -47,8 +55,8 @@ function set_prompt {
         if [ $flags ]; then
             prompt="$prompt[$BPurple$flags$Color_Off]"
         fi
-    fi
 
+    fi
     PS1="$prompt \n$BIGreen\$ $Color_Off"
 }
 
