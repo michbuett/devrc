@@ -86,7 +86,7 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-fugitive'
-Bundle 'vim-scripts/AutoComplPop'
+"Bundle 'vim-scripts/AutoComplPop'
 
 filetype plugin indent on     " required!
 
@@ -162,6 +162,7 @@ let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](\.git|target)$',
   \ 'file': '\v\.(css)$'
   \ }
+let g:ctrlp_cmd = 'CtrlPTag'
 
 "======================================================================================================================
 " => local settings
