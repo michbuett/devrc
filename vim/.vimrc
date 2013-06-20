@@ -80,7 +80,7 @@ Bundle 'Lokaltog/vim-powerline'
 Bundle 'majutsushi/tagbar'
 Bundle 'mileszs/ack.vim'
 Bundle 'michaeljsmith/vim-indent-object'
-Bundle 'pangloss/vim-javascript'
+Bundle 'kevnchu/vim-javascript'
 Bundle 'SirVer/ultisnips'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
@@ -152,11 +152,25 @@ set listchars+=precedes:<   " The character to show in the last column when wrap
 
 " remove trailing spaces when saving buffer
 autocmd BufWritePre * :%s/\s\+$//e
-
+autocmd BufWritePost *.js :call s:UpdateTags()
 
 "======================================================================================================================
 " => various other settings
 "======================================================================================================================
+
+function! s:UpdateTags() abort
+    let s:tagfiles = tagfiles()
+    for s:file in s:tagfiles
+        let s:path = fnamemodify(s:file, ':p:h')
+        "echom 'Update tag file at ' . s:path
+        let s:cmd = 'node ' . g:jsdoc_tags_path . ' -qpi -d ' . s:path . ' ' . expand('%:p')
+        "echom s:cmd
+        let s:result = system(s:cmd)
+        if s:result != ''
+            echoerr s:result
+        endif
+    endfor
+endfunction
 
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](\.git|target)$',
