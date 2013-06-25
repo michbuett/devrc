@@ -21,10 +21,12 @@ else
 fi
 
 # do not freeze terminal when using [ctrl]+[s]
-stty ixany
-stty ixoff -ixon
-stty stop undef
-stty start undef
+if [ $(command -v stty) ]; then
+    stty ixany
+    stty ixoff -ixon
+    stty stop undef
+    stty start undef
+fi
 
 # enable programmable completion features
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
