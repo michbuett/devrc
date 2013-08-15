@@ -164,7 +164,7 @@ function! s:UpdateTags() abort
     for s:file in s:tagfiles
         let s:path = fnamemodify(s:file, ':p:h')
         "echom 'Update tag file at ' . s:path
-        let s:cmd = 'node ' . g:jsdoc_tags_path . ' -qpi -d ' . s:path . ' ' . expand('%:p')
+        let s:cmd = 'node ' . g:jsdoc_tags_path . ' -qpis -d ' . s:path . ' ' . expand('%:p')
         "echom s:cmd
         let s:result = system(s:cmd)
         if s:result != ''
