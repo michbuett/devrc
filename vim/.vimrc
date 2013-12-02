@@ -13,6 +13,7 @@ set incsearch   " incremental searching
 set ignorecase  " searches are case insensitive...
 set smartcase   " ... unless they contain at least one capital letter
 set tags=./tags;/
+setlocal spell spelllang=en_us
 
 if has("statusline") && !&cp
     set laststatus=2  " always show the status bar
@@ -80,7 +81,7 @@ Bundle 'Lokaltog/vim-powerline'
 Bundle 'majutsushi/tagbar'
 Bundle 'mileszs/ack.vim'
 Bundle 'michaeljsmith/vim-indent-object'
-Bundle 'kevnchu/vim-javascript'
+Bundle 'pangloss/vim-javascript'
 Bundle 'SirVer/ultisnips'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
@@ -163,7 +164,7 @@ function! s:UpdateTags() abort
     for s:file in s:tagfiles
         let s:path = fnamemodify(s:file, ':p:h')
         "echom 'Update tag file at ' . s:path
-        let s:cmd = 'node ' . g:jsdoc_tags_path . ' -qpi -d ' . s:path . ' ' . expand('%:p')
+        let s:cmd = 'node ' . g:jsdoc_tags_path . ' -qpis -d ' . s:path . ' ' . expand('%:p')
         "echom s:cmd
         let s:result = system(s:cmd)
         if s:result != ''
