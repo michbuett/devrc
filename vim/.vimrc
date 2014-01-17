@@ -73,12 +73,12 @@ Bundle 'michbuett/vim-snippets'
 
 " ===== 3rd party plugins =====
 Bundle 'ap/vim-css-color'
+Bundle 'bling/vim-airline'
 Bundle 'ervandew/supertab'
 Bundle 'gregsexton/gitv'
 Bundle 'juvenn/mustache.vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Lokaltog/vim-easymotion'
-Bundle 'Lokaltog/vim-powerline'
 Bundle 'majutsushi/tagbar'
 Bundle 'mileszs/ack.vim'
 Bundle 'michaeljsmith/vim-indent-object'
@@ -88,7 +88,6 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-fugitive'
-"Bundle 'vim-scripts/AutoComplPop'
 
 filetype plugin indent on     " required!
 
@@ -179,6 +178,10 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(css)$'
   \ }
 let g:ctrlp_cmd = 'CtrlPTag'
+
+let g:airline_powerline_fonts = 1
+
+"let g:SuperTabDefaultCompletionType = '<c-x><c-n>'
 
 "======================================================================================================================
 " => local settings
