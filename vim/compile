@@ -1,0 +1,11 @@
+#! /bin/bash
+./configure \
+    --with-features=big \
+    --enable-gui \
+    --enable-pythoninterp=yes --with-python-config-dir=/usr/lib/python2.7/config \
+    --enable-python3interp=yes --with-python3-config-dir=/usr/lib/python3.2/config \
+    --enable-rubyinterp=yes \
+    --enable-luainterp=yes
+
+# make
+# sudo make install
