@@ -75,6 +75,7 @@ Bundle 'michbuett/vim-snippets'
 Bundle 'ap/vim-css-color'
 Bundle 'bling/vim-airline'
 Bundle 'ervandew/supertab'
+Bundle 'fholgado/minibufexpl.vim'
 Bundle 'gregsexton/gitv'
 Bundle 'juvenn/mustache.vim'
 Bundle 'kien/ctrlp.vim'
@@ -86,6 +87,7 @@ Bundle 'pangloss/vim-javascript'
 Bundle 'SirVer/ultisnips'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
+Bundle 'spf13/PIV'
 Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-fugitive'
 
@@ -108,12 +110,6 @@ else
     colorscheme desert256
 endif
 
-" Set utf8 as standard encoding and en_US as the standard language
-set encoding=utf8
-
-" Use Unix as the standard file type
-set ffs=unix,dos,mac
-
 
 "======================================================================================================================
 " => Files, backups and undo
@@ -127,6 +123,12 @@ set noswapfile
 "======================================================================================================================
 " => Text, tab and indent related
 "======================================================================================================================
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
+
+" Use Unix as the standard file type
+set ffs=unix,dos,mac
+
 " Use spaces instead of tabs
 set expandtab
 
@@ -181,7 +183,12 @@ let g:ctrlp_cmd = 'CtrlPTag'
 
 let g:airline_powerline_fonts = 1
 
-"let g:SuperTabDefaultCompletionType = '<c-x><c-n>'
+let g:SuperTabDefaultCompletionType = "<c-n>"
+let g:SuperTabContextDefaultCompletionType = "<c-n>"
+
+let g:DisableAutoPHPFolding = 1
+
+set completeopt+=longest
 
 "======================================================================================================================
 " => local settings
