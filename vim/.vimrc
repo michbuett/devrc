@@ -90,6 +90,8 @@ Bundle 'scrooloose/syntastic'
 Bundle 'spf13/PIV'
 Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-repeat'
+Bundle 'tpope/vim-speeddating'
 
 filetype plugin indent on     " required!
 
