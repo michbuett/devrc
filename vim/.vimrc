@@ -190,6 +190,9 @@ let g:SuperTabContextDefaultCompletionType = "<c-n>"
 
 let g:DisableAutoPHPFolding = 1
 
+let g:UltiSnipsExpandTrigger = "<c-space>"
+let g:UltiSnipsListSnippets = "<c-s-space>"
+
 set completeopt+=longest
 
 "======================================================================================================================
