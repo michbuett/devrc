@@ -1,4 +1,4 @@
-"======================================================================================================================
+﻿"======================================================================================================================
 " =>  Basic Setup
 "======================================================================================================================
 set nocompatible      " Use vim, no vi defaults
@@ -70,6 +70,7 @@ Bundle 'gmarik/vundle'
 Bundle 'michbuett/vim-colorschemes'
 Bundle 'michbuett/vim-keys'
 Bundle 'michbuett/vim-snippets'
+Bundle 'michbuett/PIV'
 
 " ===== 3rd party plugins =====
 Bundle 'ap/vim-css-color'
@@ -77,6 +78,7 @@ Bundle 'bling/vim-airline'
 Bundle 'ervandew/supertab'
 Bundle 'fholgado/minibufexpl.vim'
 Bundle 'gregsexton/gitv'
+Bundle 'joonty/vdebug.git'
 Bundle 'juvenn/mustache.vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Lokaltog/vim-easymotion'
@@ -87,7 +89,6 @@ Bundle 'pangloss/vim-javascript'
 Bundle 'SirVer/ultisnips'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
-Bundle 'spf13/PIV'
 Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-repeat'
@@ -111,6 +112,11 @@ else
     set t_Co=256
     colorscheme desert256
 endif
+
+set cursorline
+hi clear CursorLine
+autocmd InsertEnter * hi CursorLine guibg=grey30 ctermbg=238
+autocmd InsertLeave * hi clear CursorLine
 
 
 "======================================================================================================================
@@ -157,7 +163,6 @@ set listchars+=precedes:<   " The character to show in the last column when wrap
 
 " remove trailing spaces when saving buffer
 autocmd BufWritePre * :%s/\s\+$//e
-autocmd BufWritePost *.js :call s:UpdateTags()
 
 "======================================================================================================================
 " => various other settings
@@ -176,6 +181,10 @@ function! s:UpdateTags() abort
         endif
     endfor
 endfunction
+
+if exists('g:jsdoc_tags_path') && filereadable(expand(g:jsdoc_tags_path))
+    autocmd BufWritePost *.js :call s:UpdateTags()
+endif
 
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](\.git|target)$',
