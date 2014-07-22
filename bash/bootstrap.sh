@@ -117,8 +117,12 @@ echo "-------------------------------------------------------------------------"
 if [ -e ~/.bashrc ]; then
     echo ".bashrc already exists."
     while true; do
-        read -p "(b)ackup, (d)elete or use as (l)ocal config? " input
+        read -p "(s)kip, (b)ackup, (d)elete or use as (l)ocal config? " input
         case $input in
+            [Ss]* )
+                echo "Skip bash setup"
+                break;;
+
             [Ll]* )
                 echo -n "Renaming exiting .bashrc to .bashrc.local... "
                 mv ~/.bashrc ~/.bashrc.local
@@ -141,11 +145,41 @@ if [ -e ~/.bashrc ]; then
     done
 fi
 
-echo -n "Create .bashrc... "
-echo "[ -z \"\$PS1\" ] && return" > ~/.bashrc
-echo "export DEVRC_HOME=$DEVRC_ROOT" >> ~/.bashrc
-echo "source $DEVRC_ROOT/bash/general.sh" >> ~/.bashrc
-echo "source $DEVRC_ROOT/bash/aliases.sh" >> ~/.bashrc
-echo "source $DEVRC_ROOT/bash/prompt.sh" >> ~/.bashrc
-echo "if [ -f $HOME/.bashrc.local ]; then source \"$HOME/.bashrc.local\"; fi" >> ~/.bashrc
-echo "done"
+if [ ! -e ~/.bashrc ]; then
+    echo -n "Create .bashrc... "
+    echo "[ -z \"\$PS1\" ] && return" > ~/.bashrc
+    echo "export DEVRC_HOME=$DEVRC_ROOT" >> ~/.bashrc
+    echo "source $DEVRC_ROOT/bash/general.sh" >> ~/.bashrc
+    echo "source $DEVRC_ROOT/bash/aliases.sh" >> ~/.bashrc
+    echo "source $DEVRC_ROOT/bash/prompt.sh" >> ~/.bashrc
+    echo "if [ -f $HOME/.bashrc.local ]; then source \"$HOME/.bashrc.local\"; fi" >> ~/.bashrc
+    echo "done"
+fi
+
+################################################################################
+# STEP 2: SETUP BASH ENVIRONMENT
+echo ""
+echo " SETUP FONTS"
+echo "-------------------------------------------------------------------------"
+
+while true; do
+    read -p "Import fonts (y/n)" input
+    case $input in
+        [Yy]* )
+            if [ ! -d ~/.fonts ]; then
+                echo "Create fonts directory..."
+                mkdir ~/.fonts;
+            fi
+            echo "Copying fonts..."
+            cp $DEVRC_ROOT/powerline-fonts/**/*.ttf ~/.fonts/
+            echo "Clear fonts cache..."
+            fc-cache -vf ~/.fonts
+            echo "done"
+            break;;
+
+        [Nn]* )
+            echo "done"
+            break;;
+
+    esac
+done
