@@ -191,6 +191,8 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(css)$'
   \ }
 let g:ctrlp_cmd = 'CtrlPTag'
+let g:ctrlp_max_files = 100000
+let g:ctrlp_max_depth = 100
 
 let g:airline_powerline_fonts = 1
 
