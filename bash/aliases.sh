@@ -15,12 +15,20 @@ alias la='ls -A'
 alias l='ls -CF'
 
 # search and replace
-alias ack='ack-grep'
+if  hash ack-grep 2>/dev/null; then
+    alias cs='ack-grep'
+elif hash ack 2>/dev/null; then
+    alias cs='ack'
+elif hash ag 2>/dev/null; then
+    alias cs='ag'
+else
+    alias cs='grep -R'
+fi
 function search-n-replace() {
     pattern=$1
     replacement=$2
-    #echo "ack -l \"$pattern\" | xargs perl -pi -E \"s/$pattern/$replacement/g\""
-    ack -l "$pattern" | xargs perl -pi -E "s/$pattern/$replacement/g"
+    #echo "cs -l \"$pattern\" | xargs perl -pi -E \"s/$pattern/$replacement/g\""
+    cs -l "$pattern" | xargs perl -pi -E "s/$pattern/$replacement/g"
 }
 
 # git shortcuts
