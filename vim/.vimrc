@@ -1,6 +1,6 @@
-﻿"======================================================================================================================
+﻿"===============================================================================
 " =>  Basic Setup
-"======================================================================================================================
+"===============================================================================
 set nocompatible      " Use vim, no vi defaults
 set number            " Show line numbers
 set ruler             " Show line and column number
@@ -27,26 +27,26 @@ if has("statusline") && !&cp
     set statusline+=[%b][0x%B
 endif
 
-"======================================================================================================================
+"===============================================================================
 " => Manage plugins (Vundle)
-"----------------------------------------------------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 "
 " Setup Vundle (https://github.com/gmarik/vundle/)
 " $ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 "
-"----------------------------------------------------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 "
 " Brief help
 " :BundleInstall(!)    - install(update) bundles
 " :BundleSearch(!) foo - search(or refresh cache first) for foo
 " :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
 "
-"----------------------------------------------------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 "
 " see :h vundle for more details or wiki for FAQ
 " NOTE: comments after Bundle command are not allowed..
 "
-"======================================================================================================================
+"===============================================================================
 filetype off                   " required!
 
 set rtp+=~/.vim/bundle/vundle/
@@ -77,16 +77,16 @@ Bundle 'ap/vim-css-color'
 Bundle 'bling/vim-airline'
 Bundle 'ervandew/supertab'
 Bundle 'fholgado/minibufexpl.vim'
-Bundle 'gregsexton/gitv'
+" Bundle 'gregsexton/gitv'
 Bundle 'joonty/vdebug.git'
-Bundle 'juvenn/mustache.vim'
+" Bundle 'juvenn/mustache.vim'
 Bundle 'kien/ctrlp.vim'
-Bundle 'Lokaltog/vim-easymotion'
+" Bundle 'Lokaltog/vim-easymotion'
 Bundle 'majutsushi/tagbar'
 Bundle 'mileszs/ack.vim'
 Bundle 'michaeljsmith/vim-indent-object'
 Bundle 'pangloss/vim-javascript'
-Bundle 'SirVer/ultisnips'
+" Bundle 'SirVer/ultisnips'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-haml'
@@ -97,9 +97,9 @@ Bundle 'tpope/vim-speeddating'
 filetype plugin indent on     " required!
 
 
-"======================================================================================================================
+"===============================================================================
 " => Colors and Fonts
-"======================================================================================================================
+"===============================================================================
 
 if has("gui_running")
     colorscheme x-desert
@@ -119,18 +119,18 @@ autocmd InsertEnter * hi CursorLine guibg=grey30 ctermbg=238
 autocmd InsertLeave * hi clear CursorLine
 
 
-"======================================================================================================================
+"===============================================================================
 " => Files, backups and undo
-"======================================================================================================================
+"===============================================================================
 " Turn backup off, since most stuff is in SVN, git et.c anyway...
 set nobackup
 set nowb
 set noswapfile
 
 
-"======================================================================================================================
+"===============================================================================
 " => Text, tab and indent related
-"======================================================================================================================
+"===============================================================================
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
 
@@ -156,17 +156,19 @@ set list
 set listchars=""            " Reset the listchars
 set listchars=tab:>-        " a tab should display as ">-"
 set listchars+=trail:·      " show trailing spaces as middle dots
-set listchars+=extends:>    " The character to show in the last column when wrap is off and the line continues beyond
-                            " the right of the screen
-set listchars+=precedes:<   " The character to show in the last column when wrap is off and the line continues beyond
-                            " the right of the screen
+set listchars+=extends:>    " The character to show in the last column when wrap
+                            " is off and the line continues beyond the right of
+                            " the screen
+set listchars+=precedes:<   " The character to show in the last column when wrap
+                            " is off and the line continues beyond the right of
+                            " the screen
 
 " remove trailing spaces when saving buffer
 autocmd BufWritePre * :%s/\s\+$//e
 
-"======================================================================================================================
+"===============================================================================
 " => various other settings
-"======================================================================================================================
+"===============================================================================
 
 function! s:UpdateTags() abort
     let s:tagfiles = tagfiles()
@@ -206,9 +208,9 @@ let g:UltiSnipsListSnippets = "<c-s-space>"
 
 set completeopt+=longest
 
-"======================================================================================================================
+"===============================================================================
 " => local settings
-"======================================================================================================================
+"===============================================================================
 
 if filereadable(expand("~/.vimrc.local"))
     source ~/.vimrc.local
