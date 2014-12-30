@@ -14,7 +14,10 @@ set ignorecase  " searches are case insensitive...
 set smartcase   " ... unless they contain at least one capital letter
 set tags=./tags;/
 set iskeyword+=-
-setlocal spell spelllang=en_us
+
+if has("gui_running")
+    setlocal spell spelllang=en_us
+endif
 
 if has("statusline") && !&cp
     set laststatus=2  " always show the status bar
