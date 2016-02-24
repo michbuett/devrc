@@ -41,15 +41,5 @@ alias gr='if [ "`git rev-parse --show-cdup`" != "" ]; then cd `git rev-parse --s
 alias gsd='if [ "`git rev-parse --show-cdup`" != "" ]; then cd `git rev-parse --show-cdup`; fi && git stash && mvn clean test && git svn dcommit && git stash pop'
 alias gsr='git stash && git svn rebase && git stash pop'
 
-# maven shortcuts
-alias mt='mvn clean test'
-
-# dtmp shortcuts
-alias rcg='cd /home/dtmp/workspace/trunk/gamesload-client'
-alias rce='cd /home/dtmp/workspace/trunk/gamesload-client;vim -S /home/dtmp/dtmp.vim'
-alias rcm='sudo dtmp-vm-mount-gamesload-client mount trunk'
-alias rcu='sudo dtmp-vm-mount-gamesload-client umount trunk'
-alias rccss='rcg; bash src/main/resources/sass/update-CSS.sh update force'
-alias rcf='find . -name "*.sh" -exec chmod +x {} \;'
-alias rci='curl -X POST http://seb.devvm01.v1.dtmp.seitenbau.net/dtmp-backend-search/1.0/search/products/recreateindex'
-alias rcvm='ssh dtmp@deploy.devvm01.v1.dtmp.seitenbau.net'
+#monitor setup
+alias mode-desktop='xrandr --output eDP1 --pos 3840x650; xrandr --output DP1-1 --pos 0x0; xrandr --output DP1-2 --pos 1920x0'
