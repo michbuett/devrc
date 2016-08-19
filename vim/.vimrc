@@ -198,6 +198,7 @@ let g:ctrlp_custom_ignore = {
 let g:ctrlp_cmd = 'CtrlPTag'
 let g:ctrlp_max_files = 100000
 let g:ctrlp_max_depth = 100
+let g:ctrlp_match_window = 'top,order:btt,min:1,max:25,results:50'
 
 let g:airline_powerline_fonts = 1
 
