@@ -41,5 +41,5 @@ alias gr='if [ "`git rev-parse --show-cdup`" != "" ]; then cd `git rev-parse --s
 alias gsd='if [ "`git rev-parse --show-cdup`" != "" ]; then cd `git rev-parse --show-cdup`; fi && git stash && mvn clean test && git svn dcommit && git stash pop'
 alias gsr='git stash && git svn rebase && git stash pop'
 
-#monitor setup
-alias mode-desktop='xrandr --output eDP1 --pos 3840x650; xrandr --output DP1-1 --pos 0x0; xrandr --output DP1-2 --pos 1920x0'
+# tags
+alias phptags='ctags -R --php-kinds=-v --totals=yes'
