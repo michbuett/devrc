@@ -13,6 +13,7 @@ shopt -s checkwinsize
 
 export MAVEN_OPTS="-Xms256m -Xmx512m -XX:MaxPermSize=256m"
 export NODE_PATH="/usr/local/lib/jsctags/:$NODE_PATH"
+export CLICOLOR=1
 
 if [ -e /usr/share/terminfo/x/xterm-256color ]; then
     export TERM='xterm-256color'
@@ -32,4 +33,6 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
-
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
+fi
