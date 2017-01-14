@@ -14,6 +14,8 @@ set ignorecase  " searches are case insensitive...
 set smartcase   " ... unless they contain at least one capital letter
 set tags=./tags;/
 set iskeyword+=-
+set wildmenu
+set showmatch
 
 if has("gui_running")
     setlocal spell spelllang=en_us
@@ -70,32 +72,36 @@ Bundle 'gmarik/vundle'
 "     Bundle 'git://git.wincent.com/command-t.git'
 "
 " ===== own plugins =====
-Bundle 'michbuett/vim-colorschemes'
+" Bundle 'michbuett/vim-colorschemes'
 Bundle 'michbuett/vim-keys'
-Bundle 'michbuett/vim-snippets'
-Bundle 'michbuett/PIV'
+" Bundle 'michbuett/vim-snippets'
+" Bundle 'michbuett/PIV'
 
 " ===== 3rd party plugins =====
-Bundle 'ap/vim-css-color'
+Bundle 'altercation/vim-colors-solarized'
 Bundle 'bling/vim-airline'
 Bundle 'ervandew/supertab'
 Bundle 'fholgado/minibufexpl.vim'
-" Bundle 'gregsexton/gitv'
 Bundle 'joonty/vdebug.git'
-" Bundle 'juvenn/mustache.vim'
 Bundle 'kien/ctrlp.vim'
-" Bundle 'Lokaltog/vim-easymotion'
 Bundle 'majutsushi/tagbar'
-Bundle 'mileszs/ack.vim'
-Bundle 'michaeljsmith/vim-indent-object'
-Bundle 'pangloss/vim-javascript'
-" Bundle 'SirVer/ultisnips'
+Bundle 'terryma/vim-expand-region'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
-Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-speeddating'
+
+" HTML/CSS/SCSS/JS
+Bundle 'ap/vim-css-color'
+Bundle 'pangloss/vim-javascript'
+" elm
+Bundle 'elmcast/elm-vim'
+" PHP
+Bundle 'StanAngeloff/php.vim'
+Bundle '2072/PHP-Indenting-for-VIm'
+Bundle 'rafi/vim-phpspec'
+Bundle 'shawncplus/phpcomplete.vim'
 
 filetype plugin indent on     " required!
 
@@ -105,15 +111,11 @@ filetype plugin indent on     " required!
 "===============================================================================
 
 if has("gui_running")
-    colorscheme x-desert
-    set guioptions-=r " disable right scrollbar
-    set guioptions-=T " disable toolbar
-    set guioptions-=m " disable menubar
-    set guioptions-=l " disable left scrollbar
-    set guioptions-=L " disable dito
+    colorscheme solarized
+    set background=light
 else
-    set t_Co=256
-    colorscheme desert256
+    colorscheme industry
+    set background=dark
 endif
 
 set cursorline
@@ -149,6 +151,7 @@ set smarttab
 " 1 tab == 4 spaces
 set shiftwidth=4
 set tabstop=4
+autocmd FileType elm setlocal shiftwidth=2 tabstop=2
 
 set ai "Auto indent
 set si "Smart indent
