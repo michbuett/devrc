@@ -95,6 +95,9 @@ Bundle 'tpope/vim-speeddating'
 " HTML/CSS/SCSS/JS
 Bundle 'ap/vim-css-color'
 Bundle 'pangloss/vim-javascript'
+" purescript
+Bundle 'raichoo/purescript-vim'
+Bundle 'FrigoEU/psc-ide-vim'
 " elm
 Bundle 'elmcast/elm-vim'
 " PHP
