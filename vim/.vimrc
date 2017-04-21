@@ -16,6 +16,8 @@ set tags=./tags;/
 set iskeyword+=-
 set wildmenu
 set showmatch
+set colorcolumn=80
+set cursorline
 
 if has("gui_running")
     setlocal spell spelllang=en_us
@@ -24,53 +26,101 @@ endif
 if has("statusline") && !&cp
     set laststatus=2  " always show the status bar
 
-    " Start the status line
-    set statusline=%f\ %m\ %r
-    set statusline+=Line:%l/%L[%p%%]
-    set statusline+=Col:%v
-    set statusline+=Buf:#%n
-    set statusline+=[%b][0x%B
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " STATUS LINE (won't see much unless we disable Airline)
+    " see: :help 'statusline
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    let g:currentmode={
+        \ 'n'  : 'N',
+        \ 'no' : 'N',
+        \ 'v'  : 'V',
+        \ 'V'  : 'V·Line',
+        \ '' : 'V·Block',
+        \ 'i'  : 'I',
+        \ 'R'  : 'R',
+        \ 'Rv' : 'R·Virtual',
+        \}
+
+    function! g:ColorInsertMode() abort
+        hi CursorLine gui=underline guibg=#eee8d5 ctermbg=238
+        hi StatusLineMode guibg=#639bff
+    endfunction
+
+    function! g:ColorVisualMode() abort
+        hi StatusLineMode guibg=#fbf236
+    endfunction
+
+    function! g:ColorReplaceMode() abort
+        hi StatusLineMode guibg=#d95763
+    endfunction
+
+    function! g:ColorNormalMode() abort
+        hi clear CursorLine
+        hi StatusLineMode guibg=#6abe30
+    endfunction
+
+    function! g:ProcessCurrentMode(mode) abort
+        let l:m = get(g:currentmode, mode(), 'N')
+
+        if (match(l:m, 'I') >= 0)
+            call g:ColorInsertMode()
+        elseif (match(l:m, 'V') >= 0)
+            call g:ColorVisualMode()
+        elseif (match(l:m, 'R') >= 0)
+            call g:ColorReplaceMode()
+        else
+            call g:ColorNormalMode()
+        endif
+
+        return l:m
+    endfunction
+
+    set statusline=         "reset
+    set statusline+=%#StatusLineMode#
+    set statusline+=[%{g:ProcessCurrentMode(mode())}]
+    set statusline+=%*
+    set statusline+=\ %{fugitive#head()}  "git branch
+    set statusline+=%<      "cut from here if line is too long
+    set statusline+=\ %f    "relative path of the filename
+    set statusline+=%m      "Modified flag
+    set statusline+=%w      "Preview window flag
+    set statusline+=%r      "Readonly flag
+    set statusline+=%=      "left/right separator
+    set statusline+=%{&fenc}\|%{&ff}\|%{&ft} "encoding|file format|file type
+    set statusline+=\ %c:%l/%L     "cursor column:cursor line/total lines
+    " Errors and warnings from Syntastic
+    set statusline+=\ %#StatusLineWarnings#
+    set statusline+=%{SyntasticStatuslineFlag()}
+    set statusline+=%*
+
+    function! s:EnterWindow() abort
+        setlocal statusline<
+    endfunction
+
+    function! s:LeaveWindow() abort
+        setlocal statusline=\  "reset
+        setlocal statusline+=%f%m%r%w
+        setlocal statusline+=%=
+        setlocal statusline+=%r%w
+        setlocal statusline+=%{&fenc}\|%{&ff}\|%{&ft}
+    endfunction
+
+    autocmd WinEnter * :call s:EnterWindow()
+    autocmd WinLeave * :call s:LeaveWindow()
 endif
 
 "===============================================================================
 " => Manage plugins (Vundle)
-"-------------------------------------------------------------------------------
-"
-" Setup Vundle (https://github.com/gmarik/vundle/)
-" $ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-"
-"-------------------------------------------------------------------------------
-"
-" Brief help
-" :BundleInstall(!)    - install(update) bundles
-" :BundleSearch(!) foo - search(or refresh cache first) for foo
-" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
-"
-"-------------------------------------------------------------------------------
-"
-" see :h vundle for more details or wiki for FAQ
-" NOTE: comments after Bundle command are not allowed..
-"
 "===============================================================================
 filetype off                   " required!
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
-" let Vundle manage Vundle
-" required!
+" let Vundle manage Vundle (required!)
 Bundle 'gmarik/vundle'
 
 " Add Bundles here:
-" Examples:
-" * original repos on github
-"     Bundle 'ap/vim-css-color'
-" * vim-scripts repos
-"     Bundle 'L9'
-"     Bundle 'FuzzyFinder'
-" * non github repos
-"     Bundle 'git://git.wincent.com/command-t.git'
-"
 " ===== own plugins =====
 " Bundle 'michbuett/vim-colorschemes'
 Bundle 'michbuett/vim-keys'
@@ -79,18 +129,15 @@ Bundle 'michbuett/vim-keys'
 
 " ===== 3rd party plugins =====
 Bundle 'altercation/vim-colors-solarized'
-Bundle 'bling/vim-airline'
-Bundle 'ervandew/supertab'
-Bundle 'fholgado/minibufexpl.vim'
 Bundle 'joonty/vdebug.git'
 Bundle 'kien/ctrlp.vim'
-Bundle 'majutsushi/tagbar'
 Bundle 'terryma/vim-expand-region'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-speeddating'
+Bundle 'Valloric/YouCompleteMe'
 
 " HTML/CSS/SCSS/JS
 Bundle 'ap/vim-css-color'
@@ -116,15 +163,19 @@ filetype plugin indent on     " required!
 if has("gui_running")
     colorscheme solarized
     set background=light
+
+    set cursorline
+    hi clear CursorLine
+
+    hi StatusLine guifg=#222034 guibg=#eee8d5
+    hi StatusLineNC guibg=#93a1a1 guifg=#eee8d5
+    hi StatusLineMode gui=bold guibg=#6abe30 guifg=#222034
+    hi StatusLineWarnings gui=bold guibg=#ac3232 guifg=#fbf236
+    hi WildMenu gui=underline guibg=#222034 guifg=#fbf236
 else
     colorscheme industry
     set background=dark
 endif
-
-set cursorline
-hi clear CursorLine
-autocmd InsertEnter * hi CursorLine guibg=grey30 ctermbg=238
-autocmd InsertLeave * hi clear CursorLine
 
 
 "===============================================================================
@@ -155,6 +206,8 @@ set smarttab
 set shiftwidth=4
 set tabstop=4
 autocmd FileType elm setlocal shiftwidth=2 tabstop=2
+autocmd FileType purescript setlocal shiftwidth=2 tabstop=2
+autocmd FileType php setlocal iskeyword=@,48-57,_,192-255
 
 set ai "Auto indent
 set si "Smart indent
@@ -179,26 +232,10 @@ autocmd BufWritePre * :%s/\s\+$//e
 " => various other settings
 "===============================================================================
 
-function! s:UpdateTags() abort
-    let s:tagfiles = tagfiles()
-    for s:file in s:tagfiles
-        let s:path = fnamemodify(s:file, ':p:h')
-        "echom 'Update tag file at ' . s:path
-        let s:cmd = 'node ' . g:jsdoc_tags_path . ' -qpis -d ' . s:path . ' ' . expand('%:p')
-        "echom s:cmd
-        let s:result = system(s:cmd)
-        if s:result != ''
-            echoerr s:result
-        endif
-    endfor
-endfunction
-
-if exists('g:jsdoc_tags_path') && filereadable(expand(g:jsdoc_tags_path))
-    autocmd BufWritePost *.js :call s:UpdateTags()
-endif
+let g:syntastic_always_populate_loc_list = 1
 
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.git|target)$',
+  \ 'dir':  '\v[\/](\.git|target|vendor)$',
   \ 'file': '\v\.(css)$'
   \ }
 let g:ctrlp_cmd = 'CtrlPTag'
@@ -208,15 +245,24 @@ let g:ctrlp_match_window = 'top,order:btt,min:1,max:25,results:50'
 
 let g:airline_powerline_fonts = 1
 
-let g:SuperTabDefaultCompletionType = "<c-n>"
-let g:SuperTabContextDefaultCompletionType = "<c-n>"
-
 let g:DisableAutoPHPFolding = 1
 
-let g:UltiSnipsExpandTrigger = "<c-space>"
-let g:UltiSnipsListSnippets = "<c-s-space>"
+let g:ycm_complete_in_comments = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
 
 set completeopt+=longest
+
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
 
 "===============================================================================
 " => local settings
