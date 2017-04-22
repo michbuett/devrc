@@ -26,10 +26,6 @@ endif
 if has("statusline") && !&cp
     set laststatus=2  " always show the status bar
 
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    " STATUS LINE (won't see much unless we disable Airline)
-    " see: :help 'statusline
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
     let g:currentmode={
         \ 'n'  : 'N',
         \ 'no' : 'N',
@@ -43,19 +39,23 @@ if has("statusline") && !&cp
 
     function! g:ColorInsertMode() abort
         hi CursorLine gui=underline guibg=#eee8d5 ctermbg=238
+        hi Cursor guibg=#639bff
         hi StatusLineMode guibg=#639bff
     endfunction
 
     function! g:ColorVisualMode() abort
+        hi Cursor guibg=#fbf236
         hi StatusLineMode guibg=#fbf236
     endfunction
 
     function! g:ColorReplaceMode() abort
+        hi Cursor guibg=#d95763
         hi StatusLineMode guibg=#d95763
     endfunction
 
     function! g:ColorNormalMode() abort
         hi clear CursorLine
+        hi Cursor guibg=#6abe30
         hi StatusLineMode guibg=#6abe30
     endfunction
 
@@ -132,6 +132,7 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'joonty/vdebug.git'
 Bundle 'kien/ctrlp.vim'
 Bundle 'terryma/vim-expand-region'
+Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-fugitive'
@@ -243,19 +244,20 @@ let g:ctrlp_max_files = 100000
 let g:ctrlp_max_depth = 100
 let g:ctrlp_match_window = 'top,order:btt,min:1,max:25,results:50'
 
-let g:airline_powerline_fonts = 1
-
 let g:DisableAutoPHPFolding = 1
 
 let g:ycm_complete_in_comments = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_seed_identifiers_with_syntax = 1
 
-set completeopt+=longest
+set completeopt=menuone,longest
 
 " The Silver Searcher
 if executable('ag')
   " Use ag over grep
   set grepprg=ag\ --nogroup\ --nocolor
+  command! -nargs=+ Search execute 'silent lgrep! <args>' | lopen 10
 
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'

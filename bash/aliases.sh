@@ -42,4 +42,4 @@ alias gsd='if [ "`git rev-parse --show-cdup`" != "" ]; then cd `git rev-parse --
 alias gsr='git stash && git svn rebase && git stash pop'
 
 # tags
-alias phptags='ctags -R --php-kinds=-v --totals=yes'
+alias phptags='ctags -R --php-kinds=-v --totals=yes --fields=+l'
