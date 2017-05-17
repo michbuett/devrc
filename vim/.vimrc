@@ -18,6 +18,7 @@ set wildmenu
 set showmatch
 set colorcolumn=80
 set cursorline
+set fillchars=vert:\│,fold:-
 
 if has("gui_running")
     setlocal spell spelllang=en_us
@@ -38,31 +39,31 @@ if has("statusline") && !&cp
         \}
 
     function! g:ColorInsertMode() abort
-        hi CursorLine gui=underline guibg=#eee8d5 ctermbg=238
         hi Cursor guibg=#639bff
-        hi StatusLineMode guibg=#639bff
+        hi StatusLineMode guibg=#639bff ctermbg=33
+        "hi LineNr guibg=#639bff ctermbg=33
     endfunction
 
     function! g:ColorVisualMode() abort
         hi Cursor guibg=#fbf236
-        hi StatusLineMode guibg=#fbf236
+        hi StatusLineMode guibg=#fbf236 ctermbg=220 ctermfg=Black
+        "hi LineNr guibg=#fbf236 ctermbg=220 ctermfg=Black
     endfunction
 
     function! g:ColorReplaceMode() abort
         hi Cursor guibg=#d95763
-        hi StatusLineMode guibg=#d95763
+        hi StatusLineMode guibg=#d95763 ctermbg=Darkred
     endfunction
 
     function! g:ColorNormalMode() abort
-        hi clear CursorLine
-        hi Cursor guibg=#6abe30
-        hi StatusLineMode guibg=#6abe30
+        hi Cursor guibg=#6abe30 ctermbg=28
+        hi StatusLineMode guibg=#6abe30 ctermbg=28 ctermfg=White
     endfunction
 
     function! g:ProcessCurrentMode(mode) abort
         let l:m = get(g:currentmode, mode(), 'N')
 
-        if (match(l:m, 'I') >= 0)
+        if (match(l:m, '^I') >= 0)
             call g:ColorInsertMode()
         elseif (match(l:m, 'V') >= 0)
             call g:ColorVisualMode()
@@ -72,6 +73,7 @@ if has("statusline") && !&cp
             call g:ColorNormalMode()
         endif
 
+        redraw
         return l:m
     endfunction
 
@@ -80,11 +82,12 @@ if has("statusline") && !&cp
     set statusline+=[%{g:ProcessCurrentMode(mode())}]
     set statusline+=%*
     set statusline+=\ %{fugitive#head()}  "git branch
-    set statusline+=%<      "cut from here if line is too long
-    set statusline+=\ %f    "relative path of the filename
-    set statusline+=%m      "Modified flag
     set statusline+=%w      "Preview window flag
     set statusline+=%r      "Readonly flag
+    set statusline+=%h      "help flag
+    set statusline+=%<      "cut from here if line is too long
+    set statusline+=\ %t    "relative path of the filename
+    set statusline+=%m      "Modified flag
     set statusline+=%=      "left/right separator
     set statusline+=%{&fenc}\|%{&ff}\|%{&ft} "encoding|file format|file type
     set statusline+=\ %c:%l/%L     "cursor column:cursor line/total lines
@@ -95,17 +98,20 @@ if has("statusline") && !&cp
 
     function! s:EnterWindow() abort
         setlocal statusline<
+        setlocal synmaxcol<
+        set cursorline
     endfunction
 
     function! s:LeaveWindow() abort
-        setlocal statusline=\  "reset
-        setlocal statusline+=%f%m%r%w
-        setlocal statusline+=%=
-        setlocal statusline+=%r%w
-        setlocal statusline+=%{&fenc}\|%{&ff}\|%{&ft}
+        setlocal statusline=>>\  "reset
+        setlocal statusline+=%f
+        setlocal statusline+=%<
+        setlocal statusline+=\ %h%r%w%=<<
+        setlocal synmaxcol=1
+        set nocursorline
     endfunction
 
-    autocmd WinEnter * :call s:EnterWindow()
+    autocmd BufEnter,WinEnter * :call s:EnterWindow()
     autocmd WinLeave * :call s:LeaveWindow()
 endif
 
@@ -130,15 +136,22 @@ Bundle 'michbuett/vim-keys'
 " ===== 3rd party plugins =====
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'joonty/vdebug.git'
+" Bundle 'junegunn/goyo.vim'
+Bundle 'junegunn/limelight.vim'
+Bundle 'justinmk/vim-sneak'
 Bundle 'kien/ctrlp.vim'
+Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'terryma/vim-expand-region'
-Bundle 'scrooloose/nerdcommenter'
+Bundle 'mhinz/vim-startify'
+" Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
+Bundle 'tpope/vim-commentary'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-speeddating'
 Bundle 'Valloric/YouCompleteMe'
+" Bundle 'Yggdroot/indentLine'
 
 " HTML/CSS/SCSS/JS
 Bundle 'ap/vim-css-color'
@@ -153,6 +166,8 @@ Bundle 'StanAngeloff/php.vim'
 Bundle '2072/PHP-Indenting-for-VIm'
 Bundle 'rafi/vim-phpspec'
 Bundle 'shawncplus/phpcomplete.vim'
+" Puppet
+Bundle 'rodjek/vim-puppet'
 
 filetype plugin indent on     " required!
 
@@ -160,24 +175,20 @@ filetype plugin indent on     " required!
 "===============================================================================
 " => Colors and Fonts
 "===============================================================================
+colorscheme solarized
+set background=light
 
-if has("gui_running")
-    colorscheme solarized
-    set background=light
+set cursorline
+hi CursorLine guibg=#eee8d5 ctermbg=7
 
-    set cursorline
-    hi clear CursorLine
-
-    hi StatusLine guifg=#222034 guibg=#eee8d5
-    hi StatusLineNC guibg=#93a1a1 guifg=#eee8d5
-    hi StatusLineMode gui=bold guibg=#6abe30 guifg=#222034
-    hi StatusLineWarnings gui=bold guibg=#ac3232 guifg=#fbf236
-    hi WildMenu gui=underline guibg=#222034 guifg=#fbf236
-else
-    colorscheme industry
-    set background=dark
-endif
-
+hi StatusLine guifg=#222034 guibg=#eee8d5 ctermfg=236
+hi StatusLineNC gui=underline guifg=#93a1a1 guibg=#fdf6e3 ctermbg=7 ctermfg=14
+hi StatusLineMode gui=bold guibg=#6abe30 guifg=#222034 cterm=bold
+hi StatusLineWarnings gui=bold guibg=#ac3232 guifg=#fbf236
+hi WildMenu gui=underline cterm=underline guibg=#222034 guifg=#fbf236 ctermfg=220 ctermbg=236
+hi VertSplit ctermbg=NONE guibg=NONE
+" if has("nvim")
+" endif
 
 "===============================================================================
 " => Files, backups and undo
@@ -233,6 +244,11 @@ autocmd BufWritePre * :%s/\s\+$//e
 " => various other settings
 "===============================================================================
 
+let g:indent_guides_color_change_percent = 2
+let g:indent_guides_guide_size = 1
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_default_mapping = 0
+
 let g:syntastic_always_populate_loc_list = 1
 
 let g:ctrlp_custom_ignore = {
@@ -252,6 +268,8 @@ let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 
 set completeopt=menuone,longest
+
+let g:startify_list_order = ['sessions', 'files', 'dir', 'bookmarks', 'commands']
 
 " The Silver Searcher
 if executable('ag')
