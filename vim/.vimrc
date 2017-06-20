@@ -15,13 +15,17 @@ set smartcase   " ... unless they contain at least one capital letter
 set tags=./tags;/
 set iskeyword+=-
 set wildmenu
+set wildmode=longest:full,full
 set showmatch
 set colorcolumn=80
 set cursorline
 set fillchars=vert:\│,fold:-
+set relativenumber
 
 if has("gui_running")
     setlocal spell spelllang=en_us
+else
+    set mouse=a
 endif
 
 if has("statusline") && !&cp
@@ -135,15 +139,12 @@ Bundle 'michbuett/vim-keys'
 
 " ===== 3rd party plugins =====
 Bundle 'altercation/vim-colors-solarized'
+Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'joonty/vdebug.git'
-" Bundle 'junegunn/goyo.vim'
-Bundle 'junegunn/limelight.vim'
 Bundle 'justinmk/vim-sneak'
 Bundle 'kien/ctrlp.vim'
-Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'terryma/vim-expand-region'
 Bundle 'mhinz/vim-startify'
-" Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-commentary'
@@ -168,6 +169,8 @@ Bundle 'rafi/vim-phpspec'
 Bundle 'shawncplus/phpcomplete.vim'
 " Puppet
 Bundle 'rodjek/vim-puppet'
+" TypeScript
+Bundle 'leafgarland/typescript-vim'
 
 filetype plugin indent on     " required!
 
