@@ -43,3 +43,12 @@ alias gsr='git stash && git svn rebase && git stash pop'
 
 # tags
 alias phptags='ctags -R --php-kinds=-v --totals=yes --fields=+l'
+
+#vim
+if hash nvim 2/dev/null; then
+    alias v='nvim' # neo-vim
+elif hash xvim 2/dev/null; then
+    alias v='xvim' # MacVim
+else
+    alias v='vim'
+fi
