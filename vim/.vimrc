@@ -21,6 +21,7 @@ set colorcolumn=80
 set cursorline
 set fillchars=vert:\│,fold:-
 set relativenumber
+set scrolloff=999
 
 if has("gui_running")
     setlocal spell spelllang=en_us
@@ -61,7 +62,7 @@ if has("statusline") && !&cp
 
     function! g:ColorNormalMode() abort
         hi Cursor guibg=#6abe30 ctermbg=28
-        hi StatusLineMode guibg=#6abe30 ctermbg=28 ctermfg=White
+        hi StatusLineMode gui=bold guifg=#222034 guibg=#6abe30 ctermbg=28 ctermfg=White
     endfunction
 
     function! g:ProcessCurrentMode(mode) abort
@@ -171,6 +172,7 @@ Bundle 'shawncplus/phpcomplete.vim'
 Bundle 'rodjek/vim-puppet'
 " TypeScript
 Bundle 'leafgarland/typescript-vim'
+Bundle 'Quramy/tsuquyomi'
 
 filetype plugin indent on     " required!
 
@@ -179,10 +181,8 @@ filetype plugin indent on     " required!
 " => Colors and Fonts
 "===============================================================================
 colorscheme solarized
-set background=light
 
 set cursorline
-hi CursorLine guibg=#eee8d5 ctermbg=7
 
 hi StatusLine guifg=#222034 guibg=#eee8d5 ctermfg=236
 hi StatusLineNC gui=underline guifg=#93a1a1 guibg=#fdf6e3 ctermbg=7 ctermfg=14
@@ -190,8 +190,16 @@ hi StatusLineMode gui=bold guibg=#6abe30 guifg=#222034 cterm=bold
 hi StatusLineWarnings gui=bold guibg=#ac3232 guifg=#fbf236
 hi WildMenu gui=underline cterm=underline guibg=#222034 guifg=#fbf236 ctermfg=220 ctermbg=236
 hi VertSplit ctermbg=NONE guibg=NONE
-" if has("nvim")
-" endif
+
+if has("gui_running")
+    set background=light
+    hi CursorLine guibg=#eee8d5
+else
+    set background=dark
+    hi Normal ctermbg=NONE
+    hi CursorLine ctermbg=NONE cterm=underline
+endif
+
 
 "===============================================================================
 " => Files, backups and undo
@@ -252,6 +260,8 @@ let g:indent_guides_guide_size = 1
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_default_mapping = 0
 
+let g:psc_ide_syntastic_mode = 1
+
 let g:syntastic_always_populate_loc_list = 1
 
 let g:ctrlp_custom_ignore = {
@@ -272,6 +282,11 @@ let g:ycm_seed_identifiers_with_syntax = 1
 
 set completeopt=menuone,longest
 
+let g:startify_session_before_save = [
+            \ 'echo "Cleaning up before saving.."',
+            \ 'silent! NERDTreeClose'
+            \ ]
+let g:startify_session_persistence = 1
 let g:startify_list_order = ['sessions', 'files', 'dir', 'bookmarks', 'commands']
 
 " The Silver Searcher
@@ -286,6 +301,12 @@ if executable('ag')
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
 endif
+
+
+"===============================================================================
+" => debugging
+"===============================================================================
+map ‘ :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 "===============================================================================
 " => local settings
