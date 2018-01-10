@@ -7,7 +7,6 @@ set ruler             " Show line and column number
 syntax enable         " Turn on syntax highlighting allowing local overrides
 set backspace=indent,eol,start    " backspace through everything in insert mode
 set wmh=0             " sets min height of windows to zero
-" searching
 set hlsearch    " highlight matches
 set incsearch   " incremental searching
 set ignorecase  " searches are case insensitive...
@@ -22,8 +21,11 @@ set cursorline
 set fillchars=vert:\│,fold:-
 set relativenumber
 set scrolloff=999
+let $PATH .= (":" . $HOME . "/.cabal/bin" . ":" . $HOME . "/.local/bin")
 
 if has("gui_running")
+    set guioptions-=r
+    set guioptions-=L
     setlocal spell spelllang=en_us
 else
     set mouse=a
@@ -46,13 +48,11 @@ if has("statusline") && !&cp
     function! g:ColorInsertMode() abort
         hi Cursor guibg=#639bff
         hi StatusLineMode guibg=#639bff ctermbg=33
-        "hi LineNr guibg=#639bff ctermbg=33
     endfunction
 
     function! g:ColorVisualMode() abort
         hi Cursor guibg=#fbf236
         hi StatusLineMode guibg=#fbf236 ctermbg=220 ctermfg=Black
-        "hi LineNr guibg=#fbf236 ctermbg=220 ctermfg=Black
     endfunction
 
     function! g:ColorReplaceMode() abort
@@ -83,9 +83,7 @@ if has("statusline") && !&cp
     endfunction
 
     set statusline=         "reset
-    set statusline+=%#StatusLineMode#
-    set statusline+=[%{g:ProcessCurrentMode(mode())}]
-    set statusline+=%*
+    set statusline+=%#StatusLineMode#[%{g:ProcessCurrentMode(mode())}]%*
     set statusline+=\ %{fugitive#head()}  "git branch
     set statusline+=%w      "Preview window flag
     set statusline+=%r      "Readonly flag
@@ -109,7 +107,7 @@ if has("statusline") && !&cp
 
     function! s:LeaveWindow() abort
         setlocal statusline=>>\  "reset
-        setlocal statusline+=%f
+        setlocal statusline+=%n:%f
         setlocal statusline+=%<
         setlocal statusline+=\ %h%r%w%=<<
         setlocal synmaxcol=1
@@ -153,7 +151,6 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-speeddating'
 Bundle 'Valloric/YouCompleteMe'
-" Bundle 'Yggdroot/indentLine'
 
 " HTML/CSS/SCSS/JS
 Bundle 'ap/vim-css-color'
@@ -168,8 +165,6 @@ Bundle 'StanAngeloff/php.vim'
 Bundle '2072/PHP-Indenting-for-VIm'
 Bundle 'rafi/vim-phpspec'
 Bundle 'shawncplus/phpcomplete.vim'
-" Puppet
-Bundle 'rodjek/vim-puppet'
 " TypeScript
 Bundle 'leafgarland/typescript-vim'
 Bundle 'Quramy/tsuquyomi'
