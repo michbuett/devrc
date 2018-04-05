@@ -4,10 +4,14 @@ source "$DEVRC_HOME/bash/colors.sh"
 # and a red x for a failure)
 function get_status {
     local last_status=$?
+    local red="\e[1;31m"
+    local green="\e[1;32m"
+    local nocolor="\e[0m"
+
     if [ $last_status -eq 0 ]; then
-        last_status="$Green(/)$Color_Off"
+        last_status="$green[✓]$nocolor"
     else
-        last_status="$Red(x)$Color_Off"
+        last_status="$red[x]$nocolor"
     fi
     echo "$last_status"
 }
@@ -23,41 +27,33 @@ function get_git_flags {
     echo "$(echo $tmp_flags | sed 's/ //g')"
 }
 
-function get_build_id {
-    local file=/var/lib/dtmp/dtmp-deployment/metadata/build_id
-    if [ -e $file ]; then
-        echo "$Yellow[$(cat $file)]"
-    fi
-}
-
-function get_mem_info {
-    local meminfo=""
-    if [ -r /proc/meminfo ]; then
-        local freemem=$(sed -n "s/MemFree:[\t ]\+\([0-9]\+\) kB/\1/p" /proc/meminfo)
-        local totalmem=$(sed -n "s/MemTotal:[\t ]\+\([0-9]\+\) kB/\1/p" /proc/meminfo)
-        meminfo="$Cyan$((freemem / 1024))/$((totalmem /1024))MB$Color_Off"
-    fi
-    echo $meminfo
+jobscount() {
+  local running=$(jobs -rp | wc -l)
+  ((running)) && echo -n "(jobs: $running) "
 }
 
 function set_prompt {
     local last_status=$(get_status)
     local branch=$(get_git_branch)
-    local c=$(if [ $UID == 0 ]; then echo $BRed; else echo $IWhite; fi)
-    local meminfo=$(get_mem_info)
-    local build=$(get_build_id)
-    local prompt="\n[\d] $last_status $meminfo $c\u@\h:\w$build$Color_Off"
+    local cwd=$(pwd | sed "s|^$HOME|~|")
+    local jobs=$(jobscount)
+    local prompt="\n$last_status ${jobs}$cwd"
 
     if [ $branch ]; then
         local flags=$(get_git_flags)
-        prompt="$prompt ($Cyan$branch$Color_Off)"
+        local cyan="\e[1;36m"
+        local purple="\e[1;35m"
+        local nocolor="\e[0m"
+
+        prompt="$prompt ($cyan$branch$nocolor)"
 
         if [ $flags ]; then
-            prompt="$prompt[$BPurple$flags$Color_Off]"
+            prompt="$prompt[$purple$flags$nocolor]"
         fi
-
     fi
-    PS1="$prompt \n$BIGreen\$ $Color_Off"
+
+    PS1="> "
+    echo -e $prompt
 }
 
 PROMPT_COMMAND=set_prompt
