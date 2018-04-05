@@ -1,6 +1,6 @@
-﻿"===============================================================================
+﻿"=================================================
 " =>  Basic Setup
-"===============================================================================
+"=================================================
 set nocompatible      " Use vim, no vi defaults
 set number            " Show line numbers
 set ruler             " Show line and column number
@@ -22,6 +22,7 @@ set fillchars=vert:\│,fold:-
 set relativenumber
 set scrolloff=999
 let $PATH .= (":" . $HOME . "/.cabal/bin" . ":" . $HOME . "/.local/bin")
+set completeopt=menuone,longest,noselect,noinsert
 
 if has("gui_running")
     set guioptions-=r
@@ -47,22 +48,22 @@ if has("statusline") && !&cp
 
     function! g:ColorInsertMode() abort
         hi Cursor guibg=#639bff
-        hi StatusLineMode guibg=#639bff ctermbg=33
+        hi StatusLineMode guibg=#639bff
     endfunction
 
     function! g:ColorVisualMode() abort
         hi Cursor guibg=#fbf236
-        hi StatusLineMode guibg=#fbf236 ctermbg=220 ctermfg=Black
+        hi StatusLineMode guibg=#fbf236
     endfunction
 
     function! g:ColorReplaceMode() abort
         hi Cursor guibg=#d95763
-        hi StatusLineMode guibg=#d95763 ctermbg=Darkred
+        hi StatusLineMode guibg=#d95763
     endfunction
 
     function! g:ColorNormalMode() abort
         hi Cursor guibg=#6abe30 ctermbg=28
-        hi StatusLineMode gui=bold guifg=#222034 guibg=#6abe30 ctermbg=28 ctermfg=White
+        hi StatusLineMode gui=bold guifg=#222034 guibg=#6abe30
     endfunction
 
     function! g:ProcessCurrentMode(mode) abort
@@ -82,9 +83,13 @@ if has("statusline") && !&cp
         return l:m
     endfunction
 
+    function! g:SyntasticCheckOk() abort
+        return SyntasticStatuslineFlag() != '' ? '' : '[✓]'
+    endfunction
+
     set statusline=         "reset
     set statusline+=%#StatusLineMode#[%{g:ProcessCurrentMode(mode())}]%*
-    set statusline+=\ %{fugitive#head()}  "git branch
+    set statusline+=\ %{fugitive#head()}▸  "git branch
     set statusline+=%w      "Preview window flag
     set statusline+=%r      "Readonly flag
     set statusline+=%h      "help flag
@@ -92,12 +97,10 @@ if has("statusline") && !&cp
     set statusline+=\ %t    "relative path of the filename
     set statusline+=%m      "Modified flag
     set statusline+=%=      "left/right separator
-    set statusline+=%{&fenc}\|%{&ff}\|%{&ft} "encoding|file format|file type
+    " set statusline+=%{&fenc}\|%{&ff}\|%{&ft} "encoding|file format|file type
     set statusline+=\ %c:%l/%L     "cursor column:cursor line/total lines
-    " Errors and warnings from Syntastic
-    set statusline+=\ %#StatusLineWarnings#
-    set statusline+=%{SyntasticStatuslineFlag()}
-    set statusline+=%*
+    set statusline+=\ %{g:SyntasticCheckOk()}
+    set statusline+=%#StatusLineErrors#%{SyntasticStatuslineFlag()}%*
 
     function! s:EnterWindow() abort
         setlocal statusline<
@@ -106,21 +109,22 @@ if has("statusline") && !&cp
     endfunction
 
     function! s:LeaveWindow() abort
-        setlocal statusline=>>\  "reset
+        setlocal statusline=[[[\ \ \  "reset
         setlocal statusline+=%n:%f
         setlocal statusline+=%<
-        setlocal statusline+=\ %h%r%w%=<<
+        setlocal statusline+=\ %h%r%w%=]]]
         setlocal synmaxcol=1
         set nocursorline
+        redraw
     endfunction
 
     autocmd BufEnter,WinEnter * :call s:EnterWindow()
     autocmd WinLeave * :call s:LeaveWindow()
 endif
 
-"===============================================================================
+"=================================================
 " => Manage plugins (Vundle)
-"===============================================================================
+"=================================================
 filetype off                   " required!
 
 set rtp+=~/.vim/bundle/vundle/
@@ -131,13 +135,10 @@ Bundle 'gmarik/vundle'
 
 " Add Bundles here:
 " ===== own plugins =====
-" Bundle 'michbuett/vim-colorschemes'
 Bundle 'michbuett/vim-keys'
-" Bundle 'michbuett/vim-snippets'
-" Bundle 'michbuett/PIV'
 
 " ===== 3rd party plugins =====
-Bundle 'altercation/vim-colors-solarized'
+Bundle 'iCyMind/NeoSolarized'
 Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'joonty/vdebug.git'
 Bundle 'justinmk/vim-sneak'
@@ -150,7 +151,13 @@ Bundle 'tpope/vim-commentary'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-speeddating'
-Bundle 'Valloric/YouCompleteMe'
+if has('nvim')
+  Bundle 'Shougo/deoplete.nvim',
+else
+  Bundle 'Shougo/deoplete.nvim'
+  Bundle 'roxma/nvim-yarp'
+  Bundle 'roxma/vim-hug-neovim-rpc'
+endif
 
 " HTML/CSS/SCSS/JS
 Bundle 'ap/vim-css-color'
@@ -172,28 +179,21 @@ Bundle 'Quramy/tsuquyomi'
 filetype plugin indent on     " required!
 
 
-"===============================================================================
+"=================================================
 " => Colors and Fonts
-"===============================================================================
-colorscheme solarized
-
+"=================================================
+set termguicolors
 set cursorline
+set background=light
 
-hi StatusLine guifg=#222034 guibg=#eee8d5 ctermfg=236
-hi StatusLineNC gui=underline guifg=#93a1a1 guibg=#fdf6e3 ctermbg=7 ctermfg=14
-hi StatusLineMode gui=bold guibg=#6abe30 guifg=#222034 cterm=bold
-hi StatusLineWarnings gui=bold guibg=#ac3232 guifg=#fbf236
-hi WildMenu gui=underline cterm=underline guibg=#222034 guifg=#fbf236 ctermfg=220 ctermbg=236
+colorscheme NeoSolarized
+
+hi StatusLine gui=NONE guifg=#fdf6e3 guibg=#073642
+hi StatusLineMode gui=bold cterm=bold guibg=#6abe30 guifg=#222034
+hi StatusLineErrors guibg=#ac3232 guifg=#fbf236
+hi WildMenu gui=underline guibg=#222034 guifg=#fbf236
 hi VertSplit ctermbg=NONE guibg=NONE
-
-if has("gui_running")
-    set background=light
-    hi CursorLine guibg=#eee8d5
-else
-    set background=dark
-    hi Normal ctermbg=NONE
-    hi CursorLine ctermbg=NONE cterm=underline
-endif
+hi CursorLine guibg=#eee8d5
 
 
 "===============================================================================
@@ -256,8 +256,14 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_default_mapping = 0
 
 let g:psc_ide_syntastic_mode = 1
+let g:psc_ide_import_on_comletion = v:false
 
 let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_enable_signs = 0
+let g:syntastic_stl_format = "[⚡ %E{E(%e):%fe}%B{, }%W{W(%w):%fw}]"
+let g:syntastic_javascript_checkers = ["eslint"]
+let g:tsuquyomi_disable_quickfix = 1
+let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
 
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](\.git|target|vendor)$',
@@ -270,12 +276,8 @@ let g:ctrlp_match_window = 'top,order:btt,min:1,max:25,results:50'
 
 let g:DisableAutoPHPFolding = 1
 
-let g:ycm_complete_in_comments = 1
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_seed_identifiers_with_syntax = 1
-
-set completeopt=menuone,longest
+imap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+let g:deoplete#enable_at_startup = 1
 
 let g:startify_session_before_save = [
             \ 'echo "Cleaning up before saving.."',
