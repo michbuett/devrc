@@ -19,16 +19,17 @@
     changed = green
     untracked = cyan
 [color "interactive"]
-     promt = yellow
-     header =cyan
-     help = green
-     error = red
+    promt = yellow
+    header =cyan
+    help = green
+    error = red
 [alias]
     st = status
-    rb = !git stash && git svn rebase && git stash pop
-    dc = !git stash && git svn dcommit && git stash pop
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
     root = rev-parse --show-toplevel
 [core]
-    pager = less -XRMSI
+    pager = /usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less
+    editor = v
+[push]
+    default = simple
