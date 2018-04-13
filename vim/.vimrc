@@ -122,61 +122,70 @@ if has("statusline") && !&cp
     autocmd WinLeave * :call s:LeaveWindow()
 endif
 
-"=================================================
-" => Manage plugins (Vundle)
-"=================================================
-filetype off                   " required!
-
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-" let Vundle manage Vundle (required!)
-Bundle 'gmarik/vundle'
-
-" Add Bundles here:
-" ===== own plugins =====
-Bundle 'michbuett/vim-keys'
-
-" ===== 3rd party plugins =====
-Bundle 'iCyMind/NeoSolarized'
-Bundle 'christoomey/vim-tmux-navigator'
-Bundle 'joonty/vdebug.git'
-Bundle 'justinmk/vim-sneak'
-Bundle 'kien/ctrlp.vim'
-Bundle 'terryma/vim-expand-region'
-Bundle 'mhinz/vim-startify'
-Bundle 'scrooloose/nerdtree'
-Bundle 'scrooloose/syntastic'
-Bundle 'tpope/vim-commentary'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-repeat'
-Bundle 'tpope/vim-speeddating'
-if has('nvim')
-  Bundle 'Shougo/deoplete.nvim',
-else
-  Bundle 'Shougo/deoplete.nvim'
-  Bundle 'roxma/nvim-yarp'
-  Bundle 'roxma/vim-hug-neovim-rpc'
+"=========================================================
+" => Manage plugins (https://github.com/junegunn/vim-plug)
+"=========================================================
+" Load vim-plug
+if empty(glob("~/.vim/autoload/plug.vim"))
+    execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim'
 endif
 
-" HTML/CSS/SCSS/JS
-Bundle 'ap/vim-css-color'
-Bundle 'pangloss/vim-javascript'
-" purescript
-Bundle 'raichoo/purescript-vim'
-Bundle 'FrigoEU/psc-ide-vim'
-" elm
-Bundle 'elmcast/elm-vim'
-" PHP
-Bundle 'StanAngeloff/php.vim'
-Bundle '2072/PHP-Indenting-for-VIm'
-Bundle 'rafi/vim-phpspec'
-Bundle 'shawncplus/phpcomplete.vim'
-" TypeScript
-Bundle 'leafgarland/typescript-vim'
-Bundle 'Quramy/tsuquyomi'
+call plug#begin('~/.vim/plugged')
 
-filetype plugin indent on     " required!
+function! BuildYCM(info)
+  " info is a dictionary with 3 fields
+  " - name:   name of the plugin
+  " - status: 'installed', 'updated', or 'unchanged'
+  " - force:  set on PlugInstall! or PlugUpdate!
+  if a:info.status == 'installed' || a:info.force
+    !./install.py
+  endif
+endfunction
+
+" ===== own plugins =====
+Plug 'michbuett/vim-keys'
+
+" ===== 3rd party plugins =====
+Plug 'iCyMind/NeoSolarized'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'joonty/vdebug'
+Plug 'justinmk/vim-sneak'
+Plug 'kien/ctrlp.vim'
+Plug 'terryma/vim-expand-region'
+Plug 'mhinz/vim-startify'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/syntastic'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-speeddating'
+Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+"if has('nvim')
+"  Plug 'Shougo/deoplete.nvim',
+"else
+"  Plug 'Shougo/deoplete.nvim'
+"  Plug 'roxma/nvim-yarp'
+"  Plug 'roxma/vim-hug-neovim-rpc'
+"endif
+
+" HTML/CSS/SCSS/JS
+Plug 'ap/vim-css-color'
+Plug 'pangloss/vim-javascript'
+" purescript
+Plug 'raichoo/purescript-vim'
+Plug 'FrigoEU/psc-ide-vim'
+" elm
+Plug 'elmcast/elm-vim'
+" PHP
+Plug 'StanAngeloff/php.vim'
+Plug '2072/PHP-Indenting-for-VIm'
+Plug 'rafi/vim-phpspec'
+Plug 'shawncplus/phpcomplete.vim'
+" TypeScript
+Plug 'leafgarland/typescript-vim'
+Plug 'Quramy/tsuquyomi'
+
+call plug#end()
 
 
 "=================================================
@@ -256,7 +265,7 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_default_mapping = 0
 
 let g:psc_ide_syntastic_mode = 1
-let g:psc_ide_import_on_comletion = v:false
+let g:psc_ide_import_on_completion = v:false
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_enable_signs = 0
@@ -275,9 +284,6 @@ let g:ctrlp_max_depth = 100
 let g:ctrlp_match_window = 'top,order:btt,min:1,max:25,results:50'
 
 let g:DisableAutoPHPFolding = 1
-
-imap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-let g:deoplete#enable_at_startup = 1
 
 let g:startify_session_before_save = [
             \ 'echo "Cleaning up before saving.."',
