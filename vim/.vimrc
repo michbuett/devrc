@@ -23,6 +23,7 @@ set relativenumber
 set scrolloff=999
 let $PATH .= (":" . $HOME . "/.cabal/bin" . ":" . $HOME . "/.local/bin")
 set completeopt=menuone,longest,noselect,noinsert
+set signcolumn=yes
 
 if has("gui_running")
     set guioptions-=r
@@ -184,6 +185,9 @@ Plug 'shawncplus/phpcomplete.vim'
 " TypeScript
 Plug 'leafgarland/typescript-vim'
 Plug 'Quramy/tsuquyomi'
+" Rust
+Plug 'rust-lang/rust.vim'
+Plug 'racer-rust/vim-racer'
 
 call plug#end()
 
@@ -229,11 +233,10 @@ set expandtab
 " Be smart when using tabs ;)
 set smarttab
 
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
-autocmd FileType elm setlocal shiftwidth=2 tabstop=2
-autocmd FileType purescript setlocal shiftwidth=2 tabstop=2
+" 1 tab == 2 spaces
+set shiftwidth=2
+set tabstop=2
+autocmd FileType php setlocal shiftwidth=4 tabstop=4
 autocmd FileType php setlocal iskeyword=@,48-57,_,192-255
 
 set ai "Auto indent
@@ -259,20 +262,18 @@ autocmd BufWritePre * :%s/\s\+$//e
 " => various other settings
 "===============================================================================
 
-let g:indent_guides_color_change_percent = 2
-let g:indent_guides_guide_size = 1
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_default_mapping = 0
-
 let g:psc_ide_syntastic_mode = 1
 let g:psc_ide_import_on_completion = v:false
 
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_enable_signs = 0
-let g:syntastic_stl_format = "[⚡ %E{E(%e):%fe}%B{, }%W{W(%w):%fw}]"
+let g:syntastic_enable_signs = 1
+let g:syntastic_stl_format = " /!\\ %E{E(%e):%fe}%B{, }%W{W(%w):%fw} "
 let g:syntastic_javascript_checkers = ["eslint"]
 let g:tsuquyomi_disable_quickfix = 1
 let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
+
+hi SyntasticError guibg=#ac3232 guifg=#fbf236
+hi SyntasticWarnin guibg=#fbf236 guifg=#ac3232
 
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](\.git|target|vendor)$',
@@ -291,6 +292,11 @@ let g:startify_session_before_save = [
             \ ]
 let g:startify_session_persistence = 1
 let g:startify_list_order = ['sessions', 'files', 'dir', 'bookmarks', 'commands']
+
+let g:ycm_complete_in_comments = 1
+let g:ycm_complete_in_strings = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_use_ultisnips_completer = 0
 
 " The Silver Searcher
 if executable('ag')

@@ -13,7 +13,7 @@ shopt -s checkwinsize
 
 export NODE_PATH="/usr/local/lib/jsctags/:$NODE_PATH"
 export CLICOLOR=1
-export PATH="$HOME/.local/bin/:$PATH"
+export PATH="$HOME/.local/bin/:$HOME/.cargo/bin/:$PATH"
 
 # enable vi mode
 set -o vi
