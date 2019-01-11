@@ -173,7 +173,7 @@ Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'ap/vim-css-color'
 Plug 'pangloss/vim-javascript'
 " purescript
-Plug 'raichoo/purescript-vim'
+Plug 'purescript-contrib/purescript-vim'
 Plug 'FrigoEU/psc-ide-vim'
 " elm
 Plug 'elmcast/elm-vim'
@@ -264,6 +264,9 @@ autocmd BufWritePre * :%s/\s\+$//e
 
 let g:psc_ide_syntastic_mode = 1
 let g:psc_ide_import_on_completion = v:false
+
+let g:purescript_indent_case = 2
+let g:purescript_indent_where = 2
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_enable_signs = 1
