@@ -1,0 +1,13 @@
+#!/bin/bash
+NAME=ArenaRL
+CWD=~/Workspace/arena-rl
+editor=$(kitty @ new-window --new-tab --tab-title $NAME --title editor --cwd $CWD)
+shell=$(kitty @ new-window -m title:$NAME --cwd $CWD)
+
+kitty @ send-text -m id:$editor "v\n"
+kitty @ send-text -m id:$editor ":set background=light\n"
+kitty @ send-text -m id:$editor ":SLoad arena\n"
+
+kitty @ goto-layout -m title:$NAME tall
+kitty @ resize-window -m id:$editor -i 12
+kitty @ focus-window -m id:$editor

@@ -1,0 +1,14 @@
+#!/bin/bash
+CWD=~/Workspace/alchemy.js
+editor=$(kitty @ new-window --new-tab --tab-title Alchemy --title editor --cwd $CWD)
+pscid=$(kitty @ new-window -m title:Alchemy --cwd $CWD)
+shell=$(kitty @ new-window -m title:Alchemy --cwd $CWD)
+
+kitty @ send-text -m id:$editor "v\n"
+kitty @ send-text -m id:$editor ":set background=light\n"
+kitty @ send-text -m id:$editor "0"
+
+kitty @ send-text -m id:$pscid "pscid\n"
+kitty @ goto-layout -m title:Alchemy tall
+kitty @ resize-window -m id:$editor -i 15
+kitty @ focus-window -m id:$editor
