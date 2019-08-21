@@ -12,6 +12,7 @@ HISTFILESIZE=2000
 shopt -s checkwinsize
 
 export NODE_PATH="/usr/local/lib/jsctags/:$NODE_PATH"
+export RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src"
 export CLICOLOR=1
 export PATH="$HOME/.local/bin/:$HOME/.cargo/bin/:$PATH"
 

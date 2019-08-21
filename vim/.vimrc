@@ -24,6 +24,7 @@ set scrolloff=999
 let $PATH .= (":" . $HOME . "/.cabal/bin" . ":" . $HOME . "/.local/bin")
 set completeopt=menuone,longest,noselect,noinsert
 set signcolumn=yes
+set autoread
 
 if has("gui_running")
     set guioptions-=r
@@ -90,7 +91,7 @@ if has("statusline") && !&cp
 
     set statusline=         "reset
     set statusline+=%#StatusLineMode#[%{g:ProcessCurrentMode(mode())}]%*
-    set statusline+=\ %{fugitive#head()}▸  "git branch
+    set statusline+=\ %{fugitive#statusline()}▸  "git branch
     set statusline+=%w      "Preview window flag
     set statusline+=%r      "Readonly flag
     set statusline+=%h      "help flag
@@ -139,7 +140,7 @@ function! BuildYCM(info)
   " - status: 'installed', 'updated', or 'unchanged'
   " - force:  set on PlugInstall! or PlugUpdate!
   if a:info.status == 'installed' || a:info.force
-    !./install.py
+    !./install.py --rust-completer --ts-completer
   endif
 endfunction
 
@@ -151,7 +152,15 @@ Plug 'iCyMind/NeoSolarized'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'joonty/vdebug'
 Plug 'justinmk/vim-sneak'
-Plug 'kien/ctrlp.vim'
+
+"Plug 'kien/ctrlp.vim'
+if filereadable('/usr/local/opt/fzf')
+  Plug '/usr/local/opt/fzf'
+else
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+endif
+Plug 'junegunn/fzf.vim'
+
 Plug 'terryma/vim-expand-region'
 Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree'
@@ -160,14 +169,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-"if has('nvim')
-"  Plug 'Shougo/deoplete.nvim',
-"else
-"  Plug 'Shougo/deoplete.nvim'
-"  Plug 'roxma/nvim-yarp'
-"  Plug 'roxma/vim-hug-neovim-rpc'
-"endif
+"Plug 'prabirshrestha/vim-lsp'
 
 " HTML/CSS/SCSS/JS
 Plug 'ap/vim-css-color'
@@ -178,16 +180,18 @@ Plug 'FrigoEU/psc-ide-vim'
 " elm
 Plug 'elmcast/elm-vim'
 " PHP
-Plug 'StanAngeloff/php.vim'
-Plug '2072/PHP-Indenting-for-VIm'
-Plug 'rafi/vim-phpspec'
-Plug 'shawncplus/phpcomplete.vim'
+" Plug 'StanAngeloff/php.vim'
+" Plug '2072/PHP-Indenting-for-VIm'
+" Plug 'rafi/vim-phpspec'
+" Plug 'shawncplus/phpcomplete.vim'
 " TypeScript
 Plug 'leafgarland/typescript-vim'
 Plug 'Quramy/tsuquyomi'
 " Rust
 Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
+
+Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 
 call plug#end()
 
@@ -199,14 +203,20 @@ set termguicolors
 set cursorline
 set background=light
 
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'CursorLine'],
+  \ 'bg':      ['bg', 'CursorLine'],
+  \ 'hl':      ['fg', 'Keyword'],
+  \ 'fg+':     ['fg', 'Error' ],
+  \ 'bg+':     ['bg', 'CursorLine' ] }
+
 colorscheme NeoSolarized
 
-hi StatusLine gui=NONE guifg=#fdf6e3 guibg=#073642
+hi Normal guibg=NONE
 hi StatusLineMode gui=bold cterm=bold guibg=#6abe30 guifg=#222034
 hi StatusLineErrors guibg=#ac3232 guifg=#fbf236
 hi WildMenu gui=underline guibg=#222034 guifg=#fbf236
 hi VertSplit ctermbg=NONE guibg=NONE
-hi CursorLine guibg=#eee8d5
 
 
 "===============================================================================
@@ -267,6 +277,7 @@ let g:psc_ide_import_on_completion = v:false
 
 let g:purescript_indent_case = 2
 let g:purescript_indent_where = 2
+let g:purescript_indent_do = 2
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_enable_signs = 1
@@ -277,15 +288,6 @@ let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' ch
 
 hi SyntasticError guibg=#ac3232 guifg=#fbf236
 hi SyntasticWarnin guibg=#fbf236 guifg=#ac3232
-
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.git|target|vendor)$',
-  \ 'file': '\v\.(css)$'
-  \ }
-let g:ctrlp_cmd = 'CtrlPTag'
-let g:ctrlp_max_files = 100000
-let g:ctrlp_max_depth = 100
-let g:ctrlp_match_window = 'top,order:btt,min:1,max:25,results:50'
 
 let g:DisableAutoPHPFolding = 1
 
@@ -300,18 +302,15 @@ let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_use_ultisnips_completer = 0
+let g:ycm_rust_src_path = expand('~/Workspace/rust/src')
+
+let g:racer_experimental_completer = 1
 
 " The Silver Searcher
 if executable('ag')
   " Use ag over grep
   set grepprg=ag\ --nogroup\ --nocolor
   command! -nargs=+ Search execute 'silent lgrep! <args>' | lopen 10
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
 endif
 
 

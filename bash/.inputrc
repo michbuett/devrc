@@ -6,7 +6,6 @@ set show-mode-in-prompt on
 # -> show all results with the first TAB
 set completion-ignore-case on
 set show-all-if-ambiguous on
-TAB: menu-complete
 
 # show [N] in prompt to signal normal (command) mode
 # -> cycle through the results
