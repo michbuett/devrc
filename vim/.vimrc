@@ -201,7 +201,7 @@ call plug#end()
 "=================================================
 set termguicolors
 set cursorline
-set background=light
+set background=dark
 
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'CursorLine'],
