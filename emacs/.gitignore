@@ -4,3 +4,4 @@
 # But not these files...
 !.gitignore
 !init.org
+!first_time-init.el
