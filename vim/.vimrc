@@ -85,8 +85,31 @@ if has("statusline") && !&cp
         return l:m
     endfunction
 
-    function! g:SyntasticCheckOk() abort
-        return SyntasticStatuslineFlag() != '' ? '' : '[✓]'
+    function! LinterOk() abort
+      return SyntasticStatuslineFlag() != '' ? '' : '[✓]'
+      " let l:counts = ale#statusline#Count(bufnr(''))
+      " if l:counts.error + l:counts.warning > 0
+      "   return ''
+      " endif
+      " return '[✓]'
+    endfunction
+
+    function! LinterErrors() abort
+      return SyntasticStatuslineFlag()
+      " let l:bnum = bufnr('')
+      " let l:counts = ale#statusline#Count(l:bnum)
+
+      " if l:counts.error > 0
+      "   let l:first = ale#statusline#FirstProblem(l:bnum, 'error')
+      "   return printf('[E(%d):%d]', l:counts.error, l:first.lnum)
+      " endif
+
+      " if l:counts.warning > 0
+      "   let l:first = ale#statusline#FirstProblem(l:bnum, 'warning')
+      "   return printf('[W(%d):%d]', l:counts.warning, l:first.lnum)
+      " endif
+
+      " return ''
     endfunction
 
     set statusline=         "reset
@@ -101,8 +124,10 @@ if has("statusline") && !&cp
     set statusline+=%=      "left/right separator
     " set statusline+=%{&fenc}\|%{&ff}\|%{&ft} "encoding|file format|file type
     set statusline+=\ %c:%l/%L     "cursor column:cursor line/total lines
-    set statusline+=\ %{g:SyntasticCheckOk()}
-    set statusline+=%#StatusLineErrors#%{SyntasticStatuslineFlag()}%*
+    " set statusline+=\ %{LinterStatus()}
+    " set statusline+=\ %{g:SyntasticCheckOk()}
+    set statusline+=\ %#StatusLineOk#%{LinterOk()}%*
+    set statusline+=%#StatusLineErrors#%{LinterErrors()}%*
 
     function! s:EnterWindow() abort
         setlocal statusline<
@@ -165,6 +190,7 @@ Plug 'terryma/vim-expand-region'
 Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/syntastic'
+" Plug 'dense-analysis/ale'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
@@ -214,6 +240,7 @@ colorscheme NeoSolarized
 
 hi Normal guibg=NONE
 hi StatusLineMode gui=bold cterm=bold guibg=#6abe30 guifg=#222034
+hi StatusLineOk guibg=#6abe30 guifg=#222034
 hi StatusLineErrors guibg=#ac3232 guifg=#fbf236
 hi WildMenu gui=underline guibg=#222034 guifg=#fbf236
 hi VertSplit ctermbg=NONE guibg=NONE
@@ -272,22 +299,28 @@ autocmd BufWritePre * :%s/\s\+$//e
 " => various other settings
 "===============================================================================
 
-let g:psc_ide_syntastic_mode = 1
+" let g:psc_ide_syntastic_mode = 1
 let g:psc_ide_import_on_completion = v:false
 
 let g:purescript_indent_case = 2
 let g:purescript_indent_where = 2
 let g:purescript_indent_do = 2
 
-let g:syntastic_always_populate_loc_list = 1
+" let g:ale_linters = {'rust': ['rls']}
+" " Write this in your vimrc file
+" let g:ale_set_loclist = 0
+" let g:ale_set_quickfix = 1
+" let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_error_symbol = "E>"
+let g:syntastic_warning_symbol = "W>"
 let g:syntastic_enable_signs = 1
 let g:syntastic_stl_format = " /!\\ %E{E(%e):%fe}%B{, }%W{W(%w):%fw} "
 let g:syntastic_javascript_checkers = ["eslint"]
 let g:tsuquyomi_disable_quickfix = 1
 let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
-
-hi SyntasticError guibg=#ac3232 guifg=#fbf236
-hi SyntasticWarnin guibg=#fbf236 guifg=#ac3232
+"
+" hi SyntasticError guibg=#ac3232 guifg=#fbf236
+" hi SyntasticWarnin guibg=#fbf236 guifg=#ac3232
 
 let g:DisableAutoPHPFolding = 1
 
