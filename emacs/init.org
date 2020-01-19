@@ -7,11 +7,12 @@ Update =init.el= from =init.org= automatically
   (defun tangle-init ()
    "If the current buffer is 'init.org' the code-blocks are tangled, and the tangled file is compiled."
    (when (equal (buffer-file-name)
-        (expand-file-name (concat user-emacs-directory "init.org")))
+        (file-truename (concat user-emacs-directory "init.org")))
      ;; Avoid running hooks when tangling.
      (let ((prog-mode-hook nil))
        (org-babel-tangle)
-       (byte-compile-file (concat user-emacs-directory "init.el")))))
+       (byte-compile-file (concat user-emacs-directory "init.el"))
+       (message "...compiled emacs config"))))
 
   (add-hook 'after-save-hook 'tangle-init)
 #+END_SRC
@@ -132,10 +133,25 @@ Use [SPACE] for leader key.
     "cn" 'flycheck-next-error
     "cp" 'flycheck-previous-error)
 
+  (which-key-add-key-based-replacements
+    "<SPC>-" "horizontal split"
+    "<SPC>|" "vertical split"
+    "<SPC>/" "toggle comment"
+    "<SPC>F" "go fullscreen"
+    "<SPC>c" "flycheck"
+    "<SPC>h" "help (functions, ...)")
+
   (bind-key "º" 'evil-forward-section-begin)
   (bind-key "∆" 'evil-backward-section-begin)
 #+END_SRC
 
+** Movement
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :config
+    (evil-define-key 'normal 'evil-normal-state-map
+      (kbd "s") 'avy-goto-char-timer))
+#+END_SRC
 ** Completion
 **** Company
 Auto-completion package
@@ -143,6 +159,7 @@ https://company-mode.github.io/
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :demand
+    :diminish
     :config (progn
               (add-hook 'prog-mode-hook #'(lambda () (company-mode)))
 
@@ -160,7 +177,9 @@ https://company-mode.github.io/
                                         company-tng-frontend)
                     company-idle-delay 0.1)))
 
+  (use-package flx)
   (use-package company-fuzzy
+    :diminish
     :config (progn
               (setq company-fuzzy-sorting-backend 'flx)))
 
@@ -185,49 +204,43 @@ Emacs Polyglot: an Emacs LSP client that stays out of your way
 Narrowing lists and search results, complete commands (e.g. M-x)
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
-    :bind (:map ivy-minibuffer-map
+    :diminish
+    :bind (:map ivy-switch-buffer-map
+                ("C-k" . ivy-previous-line) ;; override "kill buffer"
+           :map ivy-minibuffer-map
                 ("C-j" . ivy-next-line)
                 ("C-k" . ivy-previous-line)
                 ([escape] . keyboard-escape-quit))
     :config (progn
-              ;(define-key ivy-minibuffer-map [escape] 'keyboard-escape-quit)
               (ivy-mode 1)))
 
   (use-package ivy-hydra)
-  (use-package ivy-posframe
-    :ensure t
-    :delight
-    :custom
-    ;; (ivy-posframe-parameters
-    ;;  '((left-fringe . 2)
-    ;;    (right-fringe . 2)
-    ;;    (internal-border-width . 2)))
-    ;; (ivy-posframe-height-alist
-    ;;  '((swiper . 15)
-    ;;    (swiper-isearch . 15)
-    ;;    (t . 10)))
-    (ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-center)))
-    ;; (ivy-posframe-display-functions-alist
-    ;;  '((complete-symbol . ivy-posframe-display-at-point)
-    ;;    (swiper . nil)
-    ;;    (swiper-isearch . nil)
-    ;;    (t . ivy-posframe-display-at-frame-center)))
-    :config
-    (ivy-posframe-mode 1))
+  ;; looks nice but does not work well in fullscreen
+  ;; (use-package ivy-posframe
+  ;;   :ensure t
+  ;;   :delight
+  ;;   :custom
+  ;;   (ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-center)))
+  ;;   :config
+  ;;   (ivy-posframe-mode 1))
 
   (use-package counsel
+    :diminish
     :bind (:map evil-normal-state-map
                 ("C-b" . counsel-switch-buffer) ; fuzzy find buffer by name
                 ("C-p" . counsel-semantic-or-imenu) ; fuzzy find in document structure (e.g. function name)
-                ("C-f" . counsel-git)) ; fuzzy find files in git repo
+                ("C-f" . counsel-fzf)) ; fuzzy find files in git repo
 
     :config (progn
+              ;; (setq counsel-fzf-cmd "FZF_DEFAULT_COMMAND='rg --files' fzf -f \"%s\" ")
+              (setq counsel-fzf-dir-function 'vc-root-dir)
+              (setenv "FZF_DEFAULT_COMMAND" "rg --files")
               (counsel-mode 1)
               ))
 
-  (use-package swiper
-    :config (progn
-              (define-key evil-normal-state-map (kbd "C-s") 'swiper)))
+  ;; (use-package swiper
+  ;;   :config (progn
+  ;;             (define-key evil-normal-state-map (kbd "C-s") 'swiper)))
 #+END_SRC
 
 ** Programming
@@ -316,26 +329,23 @@ A handy timer macro.
 Make ad-hoc lisping more comfortable.
 #+BEGIN_SRC emacs-lisp
   (use-package paredit)
-  (use-package flycheck)
 
   (add-hook 'emacs-lisp-mode-hook 'prettify-symbols-mode)
   (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-  (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
 
-  (evil-leader/set-key "xE" 'eval-buffer)
-
-  ;; Create some vimmish bindings for paredit functions
-  (evil-define-key 'normal 'evil-normal-state-map
-    (kbd ",dd") 'paredit-kill
-    (kbd ",dw") 'paredit-forward-kill-word
-    (kbd ",dB") 'paredit-backward-kill-word
-    (kbd ",l") 'paredit-forward
-    (kbd ",h") 'paredit-backward
-    (kbd ",k") 'paredit-backward-up
-    (kbd ",j") 'paredit-forward-down
-    (kbd ",J") 'paredit-wrap-round
-    (kbd ",K") 'paredit-splice-sexp)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode
+    ;; Create some vimmish bindings for paredit functions
+    ",dd" 'paredit-kill
+    ",dw" 'paredit-forward-kill-word
+    ",dB" 'paredit-backward-kill-word
+    ",l"  'paredit-forward
+    ",h"  'paredit-backward
+    ",k"  'paredit-backward-up
+    ",j"  'paredit-forward-down
+    ",J"  'paredit-wrap-round
+    ",K"  'paredit-splice-sexp
+    "xE"  'eval-buffer)
 
   (defun change-brackets (type)
     "Change |(..) to |[..]. | is point position."
@@ -474,7 +484,8 @@ Highlight selected buffer (by dimming others)
 #+BEGIN_SRC emacs-lisp
   (use-package dimmer
     :defer t
-    :init
+    :config
+    ;; :init
     (setq dimmer-fraction 0.4))
 
   (dimmer-mode t)
@@ -537,9 +548,15 @@ Joining the rest of the Emacs universe with the DOOM modeline. Gave up on Teleph
 Remember to =M-x all-the-icons-install-fonts.=
 
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package doom-modeline
-  ;;   :ensure t
-  ;;   :hook (after-init . doom-modeline-init))
+  (use-package doom-modeline
+    :disabled
+    :ensure t
+    :hook (after-init . doom-modeline-init))
+
+
+  (use-package diminish
+    :config
+    (diminish 'undo-tree-mode))
 #+END_SRC
 
 ** Dashboard
@@ -550,10 +567,11 @@ Another good idea lovingly ripped off from Spacemacs.
     :config
     (progn
       (dashboard-setup-startup-hook)
-      (setq dashboard-banner-logo-title "[ E M A C S ]"
+      (setq dashboard-banner-logo-title "<[ E M A C S ]>"
             dashboard-set-footer t
             dashboard-set-file-icons t
-            dashboard-items '((bookmarks . 5)
+            dashboard-items '(;(projects . 5)
+                              (bookmarks . 5)
                               (recents  . 5)))))
 #+END_SRC
 
@@ -564,17 +582,23 @@ Backups and lock files not required.
         create-lockfiles nil)
 #+END_SRC
 
-*dashboard** Shells
+* Shells
+** General
+Use https://github.com/akermu/emacs-libvterm as a replacement for the build-in =term-mode=. This seems to work better with evil
+#+BEGIN_SRC emacs-lisp
+  (use-package vterm
+      :ensure t
+  )
+#+END_SRC
 
-Being in the correct mode (line or char) is the cure for all evils in =term-mode=, but for some reason I couldn't get a key binding to work on =term-mode-hook= so just shove it here.
+Some usefull keybindings
 #+BEGIN_SRC emacs-lisp
   (evil-leader/set-key
     "se" 'eshell
-    "st" 'term
-    "sc" 'shell-command
-    "sr" 'shell-command-on-region
-    "sl" 'term-line-mode
-    "sc" 'term-char-mode)
+    "st" 'vterm)
+
+  (which-key-add-key-based-replacements
+    "<SPC>s" "start shell")
 #+END_SRC
 
 ** Eshell
@@ -590,17 +614,17 @@ Being in the correct mode (line or char) is the cure for all evils in =term-mode
    (setq eshell-ls-initial-args "-lh")
  #+END_SRC
 
-*** Pop-down shell
+** Pop-down shell
 Trying out [[https://gitlab.com/emacsomancer/equake][equake]].
 #+BEGIN_SRC emacs-lisp
-  (use-package equake
-      :ensure t
-      :config  ; some examples of optional settings follow:
-      (global-set-key (kbd "C-x C-c") 'equake-check-if-in-equake-frame-before-closing) ; prevent accidental frame-closure
-      (global-set-key (kbd "C-`") 'equake-invoke)
-      (setq equake-size-width 0.99) ; set width a bit less than full-screen (prevent 'overflow' on multi-monitor)
-      ;; set distinct face for Equake: white foreground with dark blue background, and different font
-      (set-face-attribute 'equake-buffer-face 'nil :inherit 'default :family "Iosevka Term Regular" :background "#000022" :foreground "white"))
+  ;; (use-package equake
+  ;;     :ensure t
+  ;;     :config  ; some examples of optional settings follow:
+  ;;     (global-set-key (kbd "C-x C-c") 'equake-check-if-in-equake-frame-before-closing) ; prevent accidental frame-closure
+  ;;     (global-set-key (kbd "C-`") 'equake-invoke)
+  ;;     (setq equake-size-width 0.99) ; set width a bit less than full-screen (prevent 'overflow' on multi-monitor)
+  ;;     ;; set distinct face for Equake: white foreground with dark blue background, and different font
+  ;;     (set-face-attribute 'equake-buffer-face 'nil :inherit 'default :family "Iosevka Term Regular" :background "#000022" :foreground "white"))
 #+END_SRC
 
 * Directories
