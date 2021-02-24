@@ -17,7 +17,7 @@ export CLICOLOR=1
 export PATH="$HOME/.local/bin/:$HOME/.cargo/bin/:$PATH"
 
 # enable vi mode
-set -o vi
+# set -o vi
 
 # do not freeze terminal when using [ctrl]+[s]
 if [ $(command -v stty) ]; then
