@@ -15,11 +15,13 @@ alias la='ls -A'
 alias l='ls -CF'
 
 # search and replace
-if  hash ack-grep 2>/dev/null; then
+if  type "rg" &> /dev/null; then
+    alias cs='rg'
+elif  type "ack-grep" &> /dev/null; then
     alias cs='ack-grep'
-elif hash ack 2>/dev/null; then
+elif type "ack" &> /dev/null; then
     alias cs='ack'
-elif hash ag 2>/dev/null; then
+elif type "ag" &> /dev/null; then
     alias cs='ag'
 else
     alias cs='grep -R'
@@ -45,9 +47,9 @@ alias gsr='git stash && git svn rebase && git stash pop'
 alias phptags='ctags -R --php-kinds=-v --totals=yes --fields=+l'
 
 #vim
-if hash nvim 2/dev/null; then
+if type "nvim" &> /dev/null; then
     alias v='nvim' # neo-vim
-elif hash xvim 2/dev/null; then
+elif type "xvim" &> /dev/null; then
     alias v='xvim' # MacVim
 else
     alias v='vim'
