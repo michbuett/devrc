@@ -150,9 +150,16 @@ Join the dark side.
     (kbd "C-k") 'evil-window-up
     (kbd "C-j") 'evil-window-down)
 
+  ;; (evil-define-key 'insert 'evil-insert-state-map
+  ;;   (kbd "jj") 'evil-normal-state)
+
   (bind-key "º" 'evil-forward-section-begin)
   (bind-key "∆" 'evil-backward-section-begin)
 
+  (use-package key-chord
+           :init
+           (key-chord-mode 1) ; turn on key-chord-mode
+           (key-chord-define evil-insert-state-map "jk" 'evil-normal-state))
 #+END_SRC
 
 [[https://github.com/emacs-evil/evil-collection]] is used to automatically configure various Emacs modes with Vi-like keybindings for evil-mode.
@@ -248,6 +255,8 @@ Narrowing lists and search results, complete commands (e.g. M-x)
                 ("C-j" . ivy-next-line)
                 ("C-k" . ivy-previous-line)
                 ([escape] . keyboard-escape-quit))
+    :config
+    (setq ivy-height 20)
     :init
     (ivy-mode 1))
 
@@ -257,10 +266,17 @@ Narrowing lists and search results, complete commands (e.g. M-x)
 
   (use-package ivy-hydra)
 
+  (use-package ivy-posframe
+    :config
+    (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
+    :init
+    (ivy-posframe-mode 1))
+
   (use-package counsel
     :diminish
     :bind (:map evil-normal-state-map
-                ("C-b" . counsel-switch-buffer) ; fuzzy find buffer by name
+                ("C-s" . swiper) ; fuzzy find line in current buffer
+                ("C-b" . ivy-switch-buffer) ; fuzzy find buffer by name
                 ("C-p" . counsel-semantic-or-imenu) ; fuzzy find in document structure (e.g. function name)
                 ("C-f" . counsel-fzf)) ; fuzzy find files in git repo
 
@@ -405,11 +421,18 @@ Rust support is pretty basic at this stage. Autocompletion comes from a separate
     Basic support for editing PHP files
 #+BEGIN_SRC emacs-lisp
   (use-package php-mode
-    :defer t
-    :mode ("\\.php\\'" . php-mode))
+    :ensure t
+    :defer t)
 
   (use-package company-php
+    :ensure t
     :defer t)
+
+  (use-package phpactor
+    :ensure t)
+
+  (use-package company-phpactor
+    :ensure t)
 #+END_SRC
 *** CSV
 #+BEGIN_SRC emacs-lisp
@@ -421,13 +444,6 @@ Rust support is pretty basic at this stage. Autocompletion comes from a separate
     (use-package json-mode :mode "\\.json")
     (use-package json-navigator)
     (use-package json-reformat)
-
-    (evil-leader/set-key-for-mode 'json-mode
-      "jnp" 'json-navigator-navigate-after-point
-      "jnr" 'json-navigator-navigate-region
-      "jr" 'json-reformat-region
-      "jpr" 'json-pretty-print
-      "jpb" 'json-pretty-print-buffer)
 #+END_SRC
 
 *** YAML
@@ -477,32 +493,11 @@ Another good idea lovingly ripped off from Spacemacs.
                               (bookmarks . 5)
                               (recents  . 5)))))
 #+END_SRC
-I often want to continue where I left of. So we store the recently opened files.
-#+BEGIN_SRC emacs-lisp
-;TODO
-#+END_SRC
-And add a function to restore session
-#+BEGIN_SRC emacs-lisp
-  (defun mb/open-all-recentf ()
-    "Open all files from previous session."
-    (interactive)
-    (dolist (file  recentf-list) (find-file file))
-    (recentf-cleanup))
-
-  (evil-leader/set-key
-    "R" 'mb/open-all-recentf)
-
-  (which-key-add-key-based-replacements
-    "<SPC>R" "Restore previous session")
-#+END_SRC
 
 * Display and appearance
 ** Frame
 Start maximized and allow fullscreen
 #+BEGIN_SRC emacs-lisp
-  (evil-leader/set-key
-    "F" 'toggle-frame-fullscreen)
-
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
 #+END_SRC
 
@@ -536,8 +531,8 @@ Highlight selected buffer (by dimming others)
 ** Font
 Use Fira Code with ligatures
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'default-frame-alist '(font . "Fira Code-14" ))
-  (set-face-attribute 'default t :font "Fira Code-14" )
+  (add-to-list 'default-frame-alist '(font . "Fira Mono for Powerline-14" ))
+  (set-face-attribute 'default t :font "Fira Mono for Powerline-14" )
 
   ;; (when (window-system)
   ;;   (set-frame-font "Fira Code"))
@@ -609,11 +604,11 @@ Show current time/date on demand.
     (interactive)
     (message (format-time-string "[W:%W] %a, %d.%m.%Y, %H:%M:%S")))
 
-  (evil-leader/set-key
-    "t" 'mb/echo-date-time)
-
-  (which-key-add-key-based-replacements
-    "<SPC>t" "show time/date")
+    (general-define-key
+     :keymaps '(normal insert visual emacs)
+     :prefix "SPC"
+     :global-prefix "C-SPC"
+     "t" '(mb/echo-date-time :which-key "show time/date"))
 #+END_SRC
 
 Hide minor modes 
