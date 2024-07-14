@@ -1,0 +1,33 @@
+theme = "catppuccin_frappe"
+
+[editor]
+scrolloff = 15
+line-number = "relative"
+cursorline = true
+color-modes = true
+lsp.display-inlay-hints = true
+ 
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+
+[editor.statusline]
+right = ["diagnostics", "workspace-diagnostics", "selections", "position", "file-encoding"]
+
+[keys.normal]
+X = "extend_line_above"
+"∑" = "expand_selection" # ALT-w for MacOS
+"∫" = "shrink_selection" # ALT-b for MacOS
+s = { "+" = "expand_selection", "*" = "shrink_selection", "n" = "select_next_sibling", "p" = "select_prev_sibling", s = "select_regex" }
+
+[keys.select]
+"C-g" = "normal_mode" # Maps Ctrl-g to enter normal mode
+X = "extend_line_above"
+"+" = "expand_selection"
+"*" = "shrink_selection"
+s = { n = "select_next_sibling", p = "select_prev_sibling", s = "select_regex" }
+
+[keys.insert]
+"C-g" = "normal_mode" # Maps Ctrl-g to enter normal mode
+j = { k = "normal_mode" } # Maps `jk` to exit insert mode
+k = { j = "normal_mode" } 
