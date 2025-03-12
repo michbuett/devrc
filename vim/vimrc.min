@@ -1,0 +1,207 @@
+﻿"=================================================
+" This is a minimal config for vim and neovim 
+" without any plugins whatsoever and should work
+" out of the box
+"
+"=================================================
+" =>  Basic Setup
+"=================================================
+set nocompatible      " Use vim, no vi defaults
+set number            " Show line numbers
+set ruler             " Show line and column number
+syntax enable         " Turn on syntax highlighting allowing local overrides
+set backspace=indent,eol,start    " backspace through everything in insert mode
+set wmh=0             " sets min height of windows to zero
+set hlsearch    " highlight matches
+set incsearch   " incremental searching
+set ignorecase  " searches are case insensitive...
+set smartcase   " ... unless they contain at least one capital letter
+set tags=./tags;/
+set iskeyword+=-
+set wildmenu
+set wildmode=longest:full,full
+set showmatch
+set colorcolumn=80
+set cursorline
+set fillchars=vert:\│,fold:-
+set relativenumber
+set scrolloff=999
+let $PATH .= (":" . $HOME . "/.cabal/bin" . ":" . $HOME . "/.local/bin")
+set completeopt=menuone,longest,noselect,noinsert
+set signcolumn=yes
+set autoread
+
+if has("gui_running")
+    set guioptions-=r
+    set guioptions-=L
+    setlocal spell spelllang=en_us
+else
+    set mouse=a
+endif
+
+if has("statusline") && !&cp
+    set laststatus=2  " always show the status bar
+
+    let g:currentmode={
+        \ 'n'  : 'N',
+        \ 'no' : 'N',
+        \ 'v'  : 'V',
+        \ 'V'  : 'V·Line',
+        \ '' : 'V·Block',
+        \ 'i'  : 'I',
+        \ 'R'  : 'R',
+        \ 'Rv' : 'R·Virtual',
+        \}
+
+    function! g:ColorInsertMode() abort
+        hi Cursor guibg=#639bff
+        hi StatusLineMode guibg=#639bff
+    endfunction
+
+    function! g:ColorVisualMode() abort
+        hi Cursor guibg=#fbf236
+        hi StatusLineMode guibg=#fbf236
+    endfunction
+
+    function! g:ColorReplaceMode() abort
+        hi Cursor guibg=#d95763
+        hi StatusLineMode guibg=#d95763
+    endfunction
+
+    function! g:ColorNormalMode() abort
+        hi Cursor guibg=#6abe30 ctermbg=28
+        hi StatusLineMode gui=bold guifg=#222034 guibg=#6abe30
+    endfunction
+
+    function! g:ProcessCurrentMode(mode) abort
+        let l:m = get(g:currentmode, mode(), 'N')
+
+        if (match(l:m, '^I') >= 0)
+            call g:ColorInsertMode()
+        elseif (match(l:m, 'V') >= 0)
+            call g:ColorVisualMode()
+        elseif (match(l:m, 'R') >= 0)
+            call g:ColorReplaceMode()
+        else
+            call g:ColorNormalMode()
+        endif
+
+        redraw
+        return l:m
+    endfunction
+
+    set statusline=         "reset
+    set statusline+=%#StatusLineMode#[%{g:ProcessCurrentMode(mode())}]%*
+    set statusline+=%w      "Preview window flag
+    set statusline+=%r      "Readonly flag
+    set statusline+=%h      "help flag
+    set statusline+=%<      "cut from here if line is too long
+    set statusline+=\ %t    "relative path of the filename
+    set statusline+=%m      "Modified flag
+    set statusline+=%=      "left/right separator
+    set statusline+=\ %c:%l/%L     "cursor column:cursor line/total lines
+
+    function! s:EnterWindow() abort
+        setlocal statusline<
+        setlocal synmaxcol<
+        set cursorline
+    endfunction
+
+    function! s:LeaveWindow() abort
+        setlocal statusline=[[[\ \ \  "reset
+        setlocal statusline+=%n:%f
+        setlocal statusline+=%<
+        setlocal statusline+=\ %h%r%w%=]]]
+        setlocal synmaxcol=1
+        set nocursorline
+        redraw
+    endfunction
+
+    autocmd BufEnter,WinEnter * :call s:EnterWindow()
+    autocmd WinLeave * :call s:LeaveWindow()
+endif
+
+
+"=================================================
+" => Colors and Fonts
+"=================================================
+set termguicolors
+set cursorline
+set background=dark
+
+colorscheme desert
+
+
+"===============================================================================
+" => Files, backups and undo
+"===============================================================================
+" Turn backup off, since most stuff is in SVN, git et.c anyway...
+set nobackup
+set nowb
+set noswapfile
+
+
+"===============================================================================
+" => Text, tab and indent related
+"===============================================================================
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
+
+" Use Unix as the standard file type
+set ffs=unix,dos,mac
+
+" Use spaces instead of tabs
+set expandtab
+
+" Be smart when using tabs ;)
+set smarttab
+
+" 1 tab == 2 spaces
+set shiftwidth=2
+set tabstop=2
+autocmd FileType php setlocal shiftwidth=4 tabstop=4
+autocmd FileType php setlocal iskeyword=@,48-57,_,192-255
+
+set ai "Auto indent
+set si "Smart indent
+set wrap "Wrap lines
+
+set list
+" List chars
+set listchars=""            " Reset the listchars
+set listchars=tab:>-        " a tab should display as ">-"
+set listchars+=trail:·      " show trailing spaces as middle dots
+set listchars+=extends:>    " The character to show in the last column when wrap
+                            " is off and the line continues beyond the right of
+                            " the screen
+set listchars+=precedes:<   " The character to show in the last column when wrap
+                            " is off and the line continues beyond the right of
+                            " the screen
+
+" remove trailing spaces when saving buffer
+autocmd BufWritePre * :%s/\s\+$//e
+
+"===============================================================================
+" => various other settings
+"===============================================================================
+
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+  command! -nargs=+ Search execute 'silent lgrep! <args>' | lopen 10
+endif
+
+
+"===============================================================================
+" => debugging
+"===============================================================================
+map ‘ :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+"===============================================================================
+" => local settings
+"===============================================================================
+
+if filereadable(expand("~/.vimrc.local"))
+    source ~/.vimrc.local
+endif
